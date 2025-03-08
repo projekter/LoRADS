@@ -52,23 +52,23 @@ extern "C"
 {
 #endif
 
-extern double LUtilGetTimeStamp(void);
-extern void LUtilMatSymmetrize(lorads_int n, double *v);
-extern lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx);
-extern void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up);
-extern void LUtilSortIntbyDbl(lorads_int *data, double *ref, lorads_int low, lorads_int up);
-extern void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
-extern void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
+__declspec(dllexport) double LUtilGetTimeStamp(void);
+__declspec(dllexport) void LUtilMatSymmetrize(lorads_int n, double *v);
+__declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx);
+__declspec(dllexport) void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up);
+__declspec(dllexport) void LUtilSortIntbyDbl(lorads_int *data, double *ref, lorads_int low, lorads_int up);
+__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
+__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
 
-extern void LUtilStartCtrlCCheck(void);
-extern lorads_int LUtilCheckCtrlC(void);
-extern void LUtilResetCtrl(void);
+__declspec(dllexport) void LUtilStartCtrlCCheck(void);
+__declspec(dllexport) lorads_int LUtilCheckCtrlC(void);
+__declspec(dllexport) void LUtilResetCtrl(void);
 
-extern lorads_int LUtilGetGlobalMKLThreads(void);
-extern void LUtilSetGlobalMKLThreads(lorads_int nTargetThreads);
+__declspec(dllexport) lorads_int LUtilGetGlobalMKLThreads(void);
+__declspec(dllexport) void LUtilSetGlobalMKLThreads(lorads_int nTargetThreads);
 
-extern lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter);
-extern void REALLOC(double **data, lorads_int nOld, lorads_int nNew);
+__declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter);
+__declspec(dllexport) void REALLOC(double **data, lorads_int nOld, lorads_int nNew);
 
 #ifdef __cplusplus
 }

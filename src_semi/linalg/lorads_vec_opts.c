@@ -117,13 +117,13 @@ extern double nrm2( lorads_int *n, double *x, lorads_int *incx ) {
 // ||x|| = sqrt(x[0]*x[0] + x[incx]*x[incx] + x[2*incx]*x[2*incx] + ...)
 #ifdef MYBLAS
     assert( *incx == 1 );
-    
+
     double nrm = 0.0;
-    
+
     for ( lorads_int i = 0; i < *n; ++i ) {
         nrm += x[i] * x[i];
     }
-    
+
     return sqrt(nrm);
 #else
 #ifdef UNDER_BLAS
@@ -138,7 +138,7 @@ extern void axpy( lorads_int *n, double *alpha, double *x, lorads_int *incx, dou
 // y[i] = alpha * x[i] + y[i]，where i from 0 to n-1, incx = 1, incy = 1 generally
 #ifdef MYBLAS
     assert( *incx == 1 && *incy == 1 );
-    
+
     for ( lorads_int i = 0; i < *n; ++i ) {
         y[i] += (*alpha) * x[i];
     }
@@ -188,11 +188,11 @@ extern double dot( lorads_int *n, double *x, lorads_int *incx, double *y, lorads
 #ifdef MYBLAS
 
     double dres = 0.0;
-    
+
     for ( lorads_int i = 0; i < *n; ++i ) {
         dres += x[i * incx[0]] * y[i * incy[0]];
     }
-    
+
     return dres;
 #else
 #ifdef UNDER_BLAS
@@ -208,11 +208,11 @@ extern void scal( lorads_int *n, double *sa, double *sx, lorads_int *incx ) {
 #ifdef MYBLAS
     assert( *incx == 1 );
     double a = *sa;
-    
+
     if ( a == 1.0 ) {
         return;
     }
-    
+
     for ( lorads_int i = 0; i < *n; ++i ) {
         sx[i] = sx[i] * a;
     }
@@ -232,18 +232,18 @@ extern void rscl( lorads_int *n, double *sa, double *sx, lorads_int *incx ) {
 #if 0
     assert( *incx == 1 );
     double a = *sa;
-    
+
     assert( a != 0.0 );
     assert( a > 0.0 );
-    
+
     if ( a == 1.0 ) {
         return;
     }
-    
+
     if ( fabs(a) < 1e-16 ) {
         a = (a > 0) ? 1e-16 : -1e-16;
     }
-    
+
     for ( lorads_int i = 0; i < *n; ++i ) {
         sx[i] = sx[i] / a;
     }

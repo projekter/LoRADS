@@ -211,7 +211,7 @@ static lorads_int dpartitiond(double *ind, double *val, lorads_int l, lorads_int
     return l;
 }
 
-extern double LUtilGetTimeStamp(void)
+__declspec(dllexport) double LUtilGetTimeStamp(void)
 {
 
     return my_clock();
@@ -220,7 +220,7 @@ extern double LUtilGetTimeStamp(void)
 /** @brief Symmetrize an n by n matrix whose lower triangular is filled
  *
  */
-extern void LUtilMatSymmetrize(lorads_int n, double *v)
+__declspec(dllexport) void LUtilMatSymmetrize(lorads_int n, double *v)
 {
 
     for (lorads_int i = 0, j; i < n; ++i)
@@ -235,7 +235,7 @@ extern void LUtilMatSymmetrize(lorads_int n, double *v)
 }
 
 /* Debugging */
-extern void LUtilPrintDblContent(lorads_int n, double *d)
+__declspec(dllexport) void LUtilPrintDblContent(lorads_int n, double *d)
 {
 
     for (lorads_int i = 0; i < n; ++i)
@@ -246,7 +246,7 @@ extern void LUtilPrintDblContent(lorads_int n, double *d)
     return;
 }
 
-extern double LUtilPrintDblSum(lorads_int n, double *d)
+__declspec(dllexport) double LUtilPrintDblSum(lorads_int n, double *d)
 {
 
     double ds = 0.0;
@@ -259,7 +259,7 @@ extern double LUtilPrintDblSum(lorads_int n, double *d)
     return ds;
 }
 
-extern double LUtilPrintDblAbsSum(lorads_int n, double *d)
+__declspec(dllexport) double LUtilPrintDblAbsSum(lorads_int n, double *d)
 {
 
     double ds = 0.0;
@@ -273,7 +273,7 @@ extern double LUtilPrintDblAbsSum(lorads_int n, double *d)
 }
 
 /* Sorting */
-extern lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
+__declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
 {
     /* Check is an lorads_integer array is ascending. */
 
@@ -288,7 +288,7 @@ extern lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
     return 1;
 }
 
-// extern void LUtilSortIntbyDbl( lorads_int *data, double *ref, lorads_int low, lorads_int up ) {
+// __declspec(dllexport) void LUtilSortIntbyDbl( lorads_int *data, double *ref, lorads_int low, lorads_int up ) {
 
 //     if ( low < up ) {
 //         lorads_int p = dpartitioni(data, ref, low, up);
@@ -299,7 +299,7 @@ extern lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
 //     return;
 // }
 
-extern void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up)
+__declspec(dllexport) void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -312,7 +312,7 @@ extern void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_i
     return;
 }
 
-extern void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up)
+__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -325,7 +325,7 @@ extern void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int lo
     return;
 }
 
-extern void LUtilSortDblByDbl(double *data, double *ref, lorads_int low, lorads_int up)
+__declspec(dllexport) void LUtilSortDblByDbl(double *data, double *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -338,12 +338,12 @@ extern void LUtilSortDblByDbl(double *data, double *ref, lorads_int low, lorads_
     return;
 }
 #ifdef __WIN32
-extern void LUtilStartCtrlCCheck(void)
+__declspec(dllexport) void LUtilStartCtrlCCheck(void)
 {
     SetConsoleCtrlHandler((PHANDLER_ROUTINE)monitorCtrlC, TRUE);
 }
 #else
-extern void LUtilStartCtrlCCheck(void)
+__declspec(dllexport) void LUtilStartCtrlCCheck(void)
 {
 
     act.sa_handler = monitorCtrlC;
@@ -351,35 +351,35 @@ extern void LUtilStartCtrlCCheck(void)
 
     return;
 }
-extern lorads_int LUtilCheckCtrlC(void)
+__declspec(dllexport) lorads_int LUtilCheckCtrlC(void)
 {
 
     return isCtrlC;
 }
 
-extern void LUtilResetCtrl(void)
+__declspec(dllexport) void LUtilResetCtrl(void)
 {
 
     isCtrlC = 0;
 }
 #endif
 
-// extern lorads_int MKL_Get_Max_Threads( void );
-// extern lorads_int MKL_Set_Num_Threads( lorads_int nth );
+// __declspec(dllexport) lorads_int MKL_Get_Max_Threads( void );
+// __declspec(dllexport) lorads_int MKL_Set_Num_Threads( lorads_int nth );
 
-// extern lorads_int LUtilGetGlobalMKLThreads( void ) {
+// __declspec(dllexport) lorads_int LUtilGetGlobalMKLThreads( void ) {
 //
 //     return MKL_Get_Max_Threads();
 // }
 //
-// extern void LUtilSetGlobalMKLThreads( lorads_int nTargetThreads ) {
+// __declspec(dllexport) void LUtilSetGlobalMKLThreads( lorads_int nTargetThreads ) {
 //
 //     MKL_Set_Num_Threads(nTargetThreads);
 //
 //     return;
 // }
 
-extern void LORADS_ONE(double *var, lorads_int size)
+__declspec(dllexport) void LORADS_ONE(double *var, lorads_int size)
 {
     for (lorads_int i = 0; i < size; ++i)
     {
@@ -401,7 +401,7 @@ extern void LORADS_ONE(double *var, lorads_int size)
 // update_interval: The lorads_interval at which to update the old EMA value
 // counter: The counter for iterations to determine when to update the old EMA
 // Returns: Boolean value indicating if there's no significant decrease. Returns true by default if not updating old EMA.
-extern lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter)
+__declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter)
 {
     lorads_int result = 1;                                                  // Default to true
     *current_ema = alpha * new_value + (1 - alpha) * (*current_ema); // Update the EMA value
@@ -434,7 +434,7 @@ extern lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, doub
 }
 
 
-// extern int AUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, int update_interval, int *counter)
+// __declspec(dllexport) int AUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, int update_interval, int *counter)
 // {
 //     int result = 1;                                                  // Default to true
 //     *current_ema = alpha * new_value + (1 - alpha) * (*current_ema); // Update the EMA value
@@ -460,7 +460,7 @@ extern lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, doub
 //     return result;
 // }
 
-extern void REALLOC(double **data, lorads_int nOld, lorads_int nNew){
+__declspec(dllexport) void REALLOC(double **data, lorads_int nOld, lorads_int nNew){
     double *dataNewPtr;
     LORADS_INIT(dataNewPtr, double, nNew);
     LORADS_MEMCPY(dataNewPtr, *data, double, nOld);

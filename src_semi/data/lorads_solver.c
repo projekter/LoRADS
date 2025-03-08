@@ -14,7 +14,7 @@
 #include "lorads_alg_common.h"
 #include "lorads_admm.h"
 
-extern void LORADSInitSolver(lorads_solver *ASolver, lorads_int nRows, lorads_int nCones, lorads_int *blkDims, lorads_int nLpCols)
+__declspec(dllexport) void LORADSInitSolver(lorads_solver *ASolver, lorads_int nRows, lorads_int nCones, lorads_int *blkDims, lorads_int nLpCols)
 {
     ASolver->nLpCols = nLpCols;
     // nRows: number of constraints
@@ -78,7 +78,7 @@ extern void LORADSInitSolver(lorads_solver *ASolver, lorads_int nRows, lorads_in
     LORADS_MEMCHECK(ASolver->lpCone);
 }
 
-extern void LORADSDestroySolver(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSDestroySolver(lorads_solver *ASolver)
 {
     // corresponding to `LORADSInitSolver`
     LORADS_FREE(ASolver->rowRHS);
@@ -122,12 +122,12 @@ extern void LORADSDestroySolver(lorads_solver *ASolver)
     }
 }
 
-extern void LORADSSetDualObjective(lorads_solver *ASolver, double *dObj){
+__declspec(dllexport) void LORADSSetDualObjective(lorads_solver *ASolver, double *dObj){
     LORADS_MEMCPY(ASolver->rowRHS, dObj, double, ASolver->nRows);
     return;
 }
 
-extern void LORADSInitConeData(lorads_solver *ASolver, user_data **SDPDatas,
+__declspec(dllexport) void LORADSInitConeData(lorads_solver *ASolver, user_data **SDPDatas,
                                double **coneMatElem, lorads_int **coneMatBeg, lorads_int **coneMatIdx,
                                lorads_int *BlkDims, lorads_int nConstrs, lorads_int nBlks,
                                lorads_int nLpCols, lorads_int *LpMatBeg, lorads_int *LpMatIdx, double *LpMatElem)
@@ -146,7 +146,7 @@ extern void LORADSInitConeData(lorads_solver *ASolver, user_data **SDPDatas,
     }
 }
 
-extern void LORADSNrm1Obj(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSNrm1Obj(lorads_solver *ASolver)
 {
     ASolver->cObjNrm1 = 0.0;
     if (ASolver->nLpCols > 0){
@@ -164,7 +164,7 @@ extern void LORADSNrm1Obj(lorads_solver *ASolver)
 }
 
 
-extern void LORADSNrm2Obj(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSNrm2Obj(lorads_solver *ASolver)
 {
     ASolver->cObjNrm2 = 0.0;
     if (ASolver->nLpCols > 0)
@@ -186,7 +186,7 @@ extern void LORADSNrm2Obj(lorads_solver *ASolver)
 
 
 
-extern void LORADSPreprocess(lorads_solver *ASolver, lorads_int *BlkDims)
+__declspec(dllexport) void LORADSPreprocess(lorads_solver *ASolver, lorads_int *BlkDims)
 {
     /* Start optimization */
     ASolver->dTimeBegin = LUtilGetTimeStamp();
@@ -262,7 +262,7 @@ extern void LORADSPreprocess(lorads_solver *ASolver, lorads_int *BlkDims)
     }
 }
 
-extern void LORADSDestroyConeData(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSDestroyConeData(lorads_solver *ASolver)
 {
     // destroy for function LORADSInitConeData_and_UVS
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
@@ -277,7 +277,7 @@ extern void LORADSDestroyConeData(lorads_solver *ASolver)
     LORADS_FREE(ASolver->lpCone);
 }
 
-extern void destroyPreprocess(lorads_solver *ASolver)
+__declspec(dllexport) void destroyPreprocess(lorads_solver *ASolver)
 {
     for  (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
     {
@@ -287,7 +287,7 @@ extern void destroyPreprocess(lorads_solver *ASolver)
     LORADS_FREE(ASolver->constrVio);
 }
 
-extern void LORADSDetermineRank(lorads_solver *ASolver, lorads_int *blkDims, double timesRank)
+__declspec(dllexport) void LORADSDetermineRank(lorads_solver *ASolver, lorads_int *blkDims, double timesRank)
 {
     lorads_int nCones = ASolver->nCones;
     lorads_int *rankElem;
@@ -318,7 +318,7 @@ extern void LORADSDetermineRank(lorads_solver *ASolver, lorads_int *blkDims, dou
     ASolver->var->rankElem = rankElem;
 }
 
-extern void detectMaxCutProb(lorads_solver *ASolver, lorads_int *BlkDims, lorads_int *maxCut){
+__declspec(dllexport) void detectMaxCutProb(lorads_solver *ASolver, lorads_int *BlkDims, lorads_int *maxCut){
     maxCut[0] = -1;
     lorads_int stat = 0;
     lorads_sdp_cone *cone = ASolver->SDPCones[0];
@@ -345,7 +345,7 @@ extern void detectMaxCutProb(lorads_solver *ASolver, lorads_int *BlkDims, lorads
     }
 }
 
-extern void detectSparsitySDPCoeff(lorads_solver *ASolver)
+__declspec(dllexport) void detectSparsitySDPCoeff(lorads_solver *ASolver)
 {
     LORADS_INIT(ASolver->sparsitySDPCoeff, double, ASolver->nCones * ASolver->nRows);
     ASolver->nnzSDPCoeffSum = 0;
@@ -358,7 +358,7 @@ extern void detectSparsitySDPCoeff(lorads_solver *ASolver)
     ASolver->overallSparse = (double)ASolver->nnzSDPCoeffSum / (double)ASolver->SDPCoeffSum / (double)ASolver->nRows;
 }
 
-extern void LORADS_RANDOM_rk_MAT(lorads_sdp_dense *U)
+__declspec(dllexport) void LORADS_RANDOM_rk_MAT(lorads_sdp_dense *U)
 {
     lorads_int n = U->nRows * U->rank;
     LORADS_INIT(U->matElem, double, n);
@@ -370,7 +370,7 @@ extern void LORADS_RANDOM_rk_MAT(lorads_sdp_dense *U)
     }
 }
 
-extern void LORADS_ONE_rk_MAT(lorads_sdp_dense *U){
+__declspec(dllexport) void LORADS_ONE_rk_MAT(lorads_sdp_dense *U){
     lorads_int n = U->nRows * U->rank;
     LORADS_INIT(U->matElem, double, n);
     LORADS_MEMCHECK(U->matElem);
@@ -379,7 +379,7 @@ extern void LORADS_ONE_rk_MAT(lorads_sdp_dense *U){
     }
 }
 
-extern void lpRandom(double *data, lorads_int n)
+__declspec(dllexport) void lpRandom(double *data, lorads_int n)
 {
     for (lorads_int i = 0; i < n; ++i)
     {
@@ -388,7 +388,7 @@ extern void lpRandom(double *data, lorads_int n)
     }
 }
 
-extern void lpFix(double *data, lorads_int n)
+__declspec(dllexport) void lpFix(double *data, lorads_int n)
 {
     for (lorads_int i = 0; i < n; ++i)
     {
@@ -403,7 +403,7 @@ extern void lpFix(double *data, lorads_int n)
     }
 }
 
-extern void LORADSInitALMVars(lorads_solver *ASolver, lorads_int *rankElem, lorads_int *BlkDims, lorads_int nBlks, lorads_int nLpCols, lorads_int lbfgsHis)
+__declspec(dllexport) void LORADSInitALMVars(lorads_solver *ASolver, lorads_int *rankElem, lorads_int *BlkDims, lorads_int nBlks, lorads_int nLpCols, lorads_int lbfgsHis)
 {
     LORADS_INIT(ASolver->var->rLp, lorads_lp_dense, 1);
     LORADS_MEMCHECK(ASolver->var->rLp);
@@ -497,7 +497,7 @@ extern void LORADSInitALMVars(lorads_solver *ASolver, lorads_int *rankElem, lora
     ASolver->lbfgsHis = head;
 }
 
-extern void LORADSDestroyALMVars(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSDestroyALMVars(lorads_solver *ASolver)
 {
     for  (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
     {
@@ -533,7 +533,7 @@ extern void LORADSDestroyALMVars(lorads_solver *ASolver)
     LORADS_FREE(ASolver->var->ARDSum);
 }
 
-extern double normalRandom()
+__declspec(dllexport) double normalRandom()
 {
     double u1 = (double)rand() / RAND_MAX; // uniform [0, 1]
     double u2 = (double)rand() / RAND_MAX;
@@ -544,7 +544,7 @@ extern double normalRandom()
     return z;
 }
 
-extern void LORADSCGCreate(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSCGCreate(lorads_solver *ASolver)
 {
     LORADS_INIT(ASolver->CGLinsys, lorads_cg_linsys *, ASolver->nCones);
     LORADS_MEMCHECK(ASolver->CGLinsys);
@@ -554,7 +554,7 @@ extern void LORADSCGCreate(lorads_solver *ASolver)
     }
 }
 
-extern void LORADSInitM1M2Temp(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSInitM1M2Temp(lorads_solver *ASolver)
 {
     LORADS_INIT(ASolver->var->M2temp, lorads_sdp_dense *, ASolver->nCones);
     LORADS_MEMCHECK(ASolver->var->M2temp);
@@ -569,7 +569,7 @@ extern void LORADSInitM1M2Temp(lorads_solver *ASolver)
     }
 }
 
-extern void LORADSInitAuxiCri(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSInitAuxiCri(lorads_solver *ASolver)
 {
     lorads_int nConstr = ASolver->nRows;
     LORADS_INIT(ASolver->constrVio, double, nConstr);
@@ -577,7 +577,7 @@ extern void LORADSInitAuxiCri(lorads_solver *ASolver)
 }
 
 
-extern void LORADSInitADMMVars(lorads_solver *ASolver, lorads_int *rankElem, lorads_int *BlkDims, lorads_int nBlks, lorads_int nLpCols)
+__declspec(dllexport) void LORADSInitADMMVars(lorads_solver *ASolver, lorads_int *rankElem, lorads_int *BlkDims, lorads_int nBlks, lorads_int nLpCols)
 {
     LORADS_INIT(ASolver->var->uLp, lorads_lp_dense, 1);
     LORADS_MEMCHECK(ASolver->var->uLp);
@@ -674,7 +674,7 @@ extern void LORADSInitADMMVars(lorads_solver *ASolver, lorads_int *rankElem, lor
     LORADSInitAuxiCri(ASolver);
 }
 
-extern void LORADSDestroyADMMVars(lorads_solver *ASolver)
+__declspec(dllexport) void LORADSDestroyADMMVars(lorads_solver *ASolver)
 {
     // destroy for function LORADSInitConeData_and_UVS
     for  (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
@@ -714,7 +714,7 @@ extern void LORADSDestroyADMMVars(lorads_solver *ASolver)
     LORADSCGDestroy(ASolver);
 }
 
-extern void LORADSInitFuncSet(lorads_func **pfunc, lorads_int nLpCols){
+__declspec(dllexport) void LORADSInitFuncSet(lorads_func **pfunc, lorads_int nLpCols){
     lorads_func *func;
     LORADS_INIT(func, lorads_func, 1);
     if (nLpCols > 0){
@@ -755,7 +755,7 @@ extern void LORADSInitFuncSet(lorads_func **pfunc, lorads_int nLpCols){
     *pfunc = func;
 }
 
-extern lorads_int CheckAllRankMax(lorads_solver *asolver, double aug_factor)
+__declspec(dllexport) lorads_int CheckAllRankMax(lorads_solver *asolver, double aug_factor)
 {
     lorads_int *rank_flags = malloc(asolver->nCones * sizeof (lorads_int));
     LORADS_ZERO(rank_flags, lorads_int, asolver->nCones);
@@ -773,7 +773,7 @@ extern lorads_int CheckAllRankMax(lorads_solver *asolver, double aug_factor)
     return sum_flag == asolver->nCones;
 }
 
-extern void lpRandomDiag(double *data, lorads_int n, lorads_int nRows, lorads_int nCols)
+__declspec(dllexport) void lpRandomDiag(double *data, lorads_int n, lorads_int nRows, lorads_int nCols)
 {
     if (n == 0){
         return;
@@ -785,7 +785,7 @@ extern void lpRandomDiag(double *data, lorads_int n, lorads_int nRows, lorads_in
     }
 }
 
-extern void  LORADSCGReAllocate(lorads_solver *ASolver){
+__declspec(dllexport) void  LORADSCGReAllocate(lorads_solver *ASolver){
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
          LORADSCGSolverReCreate(&ASolver->CGLinsys[iCone], ASolver->var->U[iCone]->nRows, ASolver->var->U[iCone]->rank, ASolver->nRows);
     }
@@ -803,7 +803,7 @@ static void printinfo_aug(lorads_int iCone){
 #endif
 }
 
-extern lorads_int AUG_RANK(lorads_solver *ASolver, lorads_int *BlkDims, lorads_int nBlks, double aug_factor)
+__declspec(dllexport) lorads_int AUG_RANK(lorads_solver *ASolver, lorads_int *BlkDims, lorads_int nBlks, double aug_factor)
 {
     // double rank
 
@@ -905,7 +905,7 @@ extern lorads_int AUG_RANK(lorads_solver *ASolver, lorads_int *BlkDims, lorads_i
     return CheckAllRankMax(ASolver, aug_factor);
 }
 
-extern void printRes(double pObj, double dObj, double constrVio, double dualInfe, double pdgap, double constrVioInf, double dualInfeInf)
+__declspec(dllexport) void printRes(double pObj, double dObj, double constrVio, double dualInfe, double pdgap, double constrVioInf, double dualInfeInf)
 {
     printf("-----------------------------------------------------------------------\n");
     printf("Objective function Value are:\n");
@@ -921,7 +921,7 @@ extern void printRes(double pObj, double dObj, double constrVio, double dualInfe
     printf("-----------------------------------------------------------------------\n");
 }
 
-extern void  LORADSEndProgram( lorads_solver *ASolver)
+__declspec(dllexport) void  LORADSEndProgram( lorads_solver *ASolver)
 {
     printf("final rank: \n");
     for (int i = 0; i < ASolver->nCones; i++) {
@@ -965,7 +965,7 @@ extern void  LORADSEndProgram( lorads_solver *ASolver)
              ASolver->dimacError[ LORADS_DIMAC_ERROR_DUALFEASIBLE_L1] * (1 + ASolver->cObjNrm1) / (1 + ASolver->cObjNrmInf));
 }
 
-extern void LORADS_ALMtoADMM(lorads_solver *ASolver, lorads_params *params, lorads_alm_state *alm_state, lorads_admm_state *admm_state)
+__declspec(dllexport) void LORADS_ALMtoADMM(lorads_solver *ASolver, lorads_params *params, lorads_alm_state *alm_state, lorads_admm_state *admm_state)
 {
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
     {
@@ -1004,7 +1004,7 @@ extern void LORADS_ALMtoADMM(lorads_solver *ASolver, lorads_params *params, lora
 }
 
 
-extern void calculate_dual_infeasibility_solver(lorads_solver *ASolver){
+__declspec(dllexport) void calculate_dual_infeasibility_solver(lorads_solver *ASolver){
     double *negLambd;
     LORADS_INIT(negLambd, double, ASolver->nRows);
     LORADS_ZERO(negLambd, double, ASolver->nRows);
@@ -1037,7 +1037,7 @@ extern void calculate_dual_infeasibility_solver(lorads_solver *ASolver){
 }
 
 
-extern void objScale_dualvar(lorads_solver *ASolver, double *scaleTemp, double *scaleHis){
+__declspec(dllexport) void objScale_dualvar(lorads_solver *ASolver, double *scaleTemp, double *scaleHis){
     scaleHis[0] *= scaleTemp[0];
     if(ASolver->nLpCols > 0){
         lorads_lp_cone *lpCone = ASolver->lpCone;
@@ -1051,7 +1051,7 @@ extern void objScale_dualvar(lorads_solver *ASolver, double *scaleTemp, double *
     scal(&ASolver->nRows, scaleTemp, ASolver->var->dualVar, &incx);
 }
 
-extern void cal_sdp_const(lorads_params *params, lorads_solver *ASolver, SDPConst *sdpConst){
+__declspec(dllexport) void cal_sdp_const(lorads_params *params, lorads_solver *ASolver, SDPConst *sdpConst){
     // Calculate obj nrm1, nrm2, nrmInf of obj
     LORADSNrm1Obj(ASolver);
     LORADSNrm2Obj(ASolver);
@@ -1072,7 +1072,7 @@ extern void cal_sdp_const(lorads_params *params, lorads_solver *ASolver, SDPCons
     sdpConst->l_2_norm_b = ASolver->bRHSNrm2;
 }
 
-extern double reopt(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, lorads_admm_state *admm_state_pointer, double *reopt_param, lorads_int *reopt_alm_iter, lorads_int *reopt_admm_iter, double timeSolveStart, int *admm_bad_iter_flag, int reopt_level) {
+__declspec(dllexport) double reopt(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, lorads_admm_state *admm_state_pointer, double *reopt_param, lorads_int *reopt_alm_iter, lorads_int *reopt_admm_iter, double timeSolveStart, int *admm_bad_iter_flag, int reopt_level) {
     lorads_int old_maxALMIter = params->maxALMIter;
     lorads_int old_maxADMMIter = params->maxADMMIter;
     double old_rhoMax = params->rhoMax;
@@ -1116,7 +1116,7 @@ extern double reopt(lorads_params *params, lorads_solver *ASolver, lorads_alm_st
     return end_time - start_time;
 }
 
-extern void LORADSInitALMState(lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, double rho, lorads_int outerIter, lorads_int innerIter){
+__declspec(dllexport) void LORADSInitALMState(lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, double rho, lorads_int outerIter, lorads_int innerIter){
 
     alm_state_pointer->dual_objective_value = 1e+30;
     alm_state_pointer->primal_objective_value = 1e+30;
@@ -1131,7 +1131,7 @@ extern void LORADSInitALMState(lorads_solver *ASolver, lorads_alm_state *alm_sta
     alm_state_pointer->tau = 0.0;
 }
 
-extern void LORADSInitADMMState(lorads_solver *ASolver, lorads_admm_state *admm_state_pointer, double rho){
+__declspec(dllexport) void LORADSInitADMMState(lorads_solver *ASolver, lorads_admm_state *admm_state_pointer, double rho){
     admm_state_pointer->dual_objective_value = 1e+30;
     admm_state_pointer->primal_objective_value = 1e+30;
     admm_state_pointer->primal_dual_gap = 1e+30;
@@ -1145,7 +1145,7 @@ extern void LORADSInitADMMState(lorads_solver *ASolver, lorads_admm_state *admm_
     admm_state_pointer->iter = 0;
 }
 
-extern void initial_solver_state(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, lorads_admm_state *admm_state_pointer, SDPConst *sdpConst){
+__declspec(dllexport) void initial_solver_state(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_state_pointer, lorads_admm_state *admm_state_pointer, SDPConst *sdpConst){
     // Calculate obj nrm1, nrm2, nrmInf of obj
     cal_sdp_const(params, ASolver, sdpConst);
     // Initialize the ALM state
@@ -1170,7 +1170,7 @@ extern void initial_solver_state(lorads_params *params, lorads_solver *ASolver, 
 }
 
 
-extern void printfProbInfo(lorads_solver *ASolver){
+__declspec(dllexport) void printfProbInfo(lorads_solver *ASolver){
     printf("-----------------------------------------------------------------------\n");
     printf("Problem Information:\n");
 #ifdef INT32

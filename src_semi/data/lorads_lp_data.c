@@ -157,7 +157,7 @@ static void LPdataMatDenseScaleData(void *pA, double scaleFactor){
 }
 
 
-extern void LPDataMatIChooseType(lp_coeff *lpCoeff, lp_coeff_type dataType){
+__declspec(dllexport) void LPDataMatIChooseType(lp_coeff *lpCoeff, lp_coeff_type dataType){
     lpCoeff->dataType = dataType;
     switch (dataType) {
         case LP_COEFF_ZERO:

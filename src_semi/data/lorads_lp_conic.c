@@ -7,14 +7,14 @@
 #include "lorads_sdp_data.h"
 #include "lorads_lp_data.h"
 
-extern void lp_cone_create(lorads_lp_cone_data **coneData){
+__declspec(dllexport) void lp_cone_create(lorads_lp_cone_data **coneData){
     lorads_lp_cone_data *conePtr;
     LORADS_INIT(conePtr, lorads_lp_cone_data, 1);
     LORADS_MEMCHECK(conePtr);
     *coneData = conePtr;
 }
 
-extern void lp_cone_proc(lorads_lp_cone_data *cone, lorads_int nRow, lorads_int nCol, lorads_int *lpMatBeg, lorads_int *lpMatIdx, double *lpMatElem){
+__declspec(dllexport) void lp_cone_proc(lorads_lp_cone_data *cone, lorads_int nRow, lorads_int nCol, lorads_int *lpMatBeg, lorads_int *lpMatIdx, double *lpMatElem){
     cone->nRow = nRow;
     cone->nCol = nCol;
 
@@ -46,7 +46,7 @@ extern void lp_cone_proc(lorads_lp_cone_data *cone, lorads_int nRow, lorads_int 
     }
 }
 
-extern void lp_cone_presolve(lorads_lp_cone_data *cone){
+__declspec(dllexport) void lp_cone_presolve(lorads_lp_cone_data *cone){
     LORADS_INIT(cone->lpCol, lp_coeff *, cone->nCol);
     lorads_int nnz = 0;
     LORADS_INIT(cone->nrm2Square, double, cone->nCol);
@@ -120,19 +120,19 @@ extern void lp_cone_presolve(lorads_lp_cone_data *cone){
     LORADS_FREE(nnzStat);
 }
 
-extern void lp_cone_obj_nrm1(lorads_lp_cone_data *coneData, double *nrm1Val, lorads_int nLpCols){
+__declspec(dllexport) void lp_cone_obj_nrm1(lorads_lp_cone_data *coneData, double *nrm1Val, lorads_int nLpCols){
     lorads_int incx = 1;
     nrm1Val[0] = nrm1(&nLpCols, coneData->objMatElem, &incx);
 }
 
-extern void lp_cone_obj_nrm2Square(lorads_lp_cone_data *coneData, double *nrm2Val, lorads_int nLpCols){
+__declspec(dllexport) void lp_cone_obj_nrm2Square(lorads_lp_cone_data *coneData, double *nrm2Val, lorads_int nLpCols){
     lorads_int incx = 1;
     double temp;
     temp = nrm1(&nLpCols, coneData->objMatElem, &incx);
     nrm2Val[0] = temp * temp;
 }
 
-extern void lp_cone_obj_nrmInf(lorads_lp_cone_data *coneData, double *nrmInf, lorads_int nLpCols){
+__declspec(dllexport) void lp_cone_obj_nrmInf(lorads_lp_cone_data *coneData, double *nrmInf, lorads_int nLpCols){
     lorads_int incx = 1;
 #ifdef UNDER_BLAS
     lorads_int idx = idamax_(&nLpCols, coneData->objMatElem, &incx);
@@ -142,7 +142,7 @@ extern void lp_cone_obj_nrmInf(lorads_lp_cone_data *coneData, double *nrmInf, lo
     nrmInf[0] = LORADS_MAX(fabs(coneData->objMatElem[idx]), nrmInf[0]);
 }
 
-extern void destroy_lp_cone_data(lorads_lp_cone_data **coneData){
+__declspec(dllexport) void destroy_lp_cone_data(lorads_lp_cone_data **coneData){
     lorads_lp_cone_data *data = *coneData;
     LORADS_FREE(data->objMatElem);
     LORADS_FREE(data->rowMatBeg);
@@ -156,7 +156,7 @@ extern void destroy_lp_cone_data(lorads_lp_cone_data **coneData){
     LORADS_FREE(data->lpCol);
 }
 
-extern void lp_cone_view(lorads_lp_cone_data *cone ) {
+__declspec(dllexport) void lp_cone_view(lorads_lp_cone_data *cone ) {
 #ifdef lorads_int32
     printf("LP Cone of %d variables and %d constraints \n", cone->nRow, cone->nCol);
 #endif
@@ -169,12 +169,12 @@ extern void lp_cone_view(lorads_lp_cone_data *cone ) {
     return;
 }
 
-extern void lp_cone_AUV(lorads_lp_cone_data *coneData , lorads_lp_dense *uLp, lorads_lp_dense *vLp, double *AUV, lorads_int iCol){
+__declspec(dllexport) void lp_cone_AUV(lorads_lp_cone_data *coneData , lorads_lp_dense *uLp, lorads_lp_dense *vLp, double *AUV, lorads_int iCol){
     double uv = uLp->matElem[iCol] * vLp->matElem[iCol];
     coneData->lpCol[iCol]->mul_inner_rk_double(coneData->lpCol[iCol]->dataMat, &uv, AUV);
 }
 
-extern void lp_cone_AUV2(lorads_lp_cone_data *cone, double *uvLp, double *AUVSum){
+__declspec(dllexport) void lp_cone_AUV2(lorads_lp_cone_data *cone, double *uvLp, double *AUVSum){
     lorads_int nCol = cone->nCol;
     lorads_int nRow = cone->nRow;
     LORADS_ZERO(AUVSum, double, nRow);
@@ -190,7 +190,7 @@ extern void lp_cone_AUV2(lorads_lp_cone_data *cone, double *uvLp, double *AUVSum
 //    LORADS_FREE(AUVSumTemp);
 }
 
-extern void lp_cone_objAUV(lorads_lp_cone_data *cone, lorads_lp_dense *uLp, lorads_lp_dense *vLp, double *cUV){
+__declspec(dllexport) void lp_cone_objAUV(lorads_lp_cone_data *cone, lorads_lp_dense *uLp, lorads_lp_dense *vLp, double *cUV){
     double *uv;
     LORADS_INIT(uv, double, vLp->nCols);
     LORADS_MEMCPY(uv, vLp->matElem, double, vLp->nCols);
@@ -201,22 +201,22 @@ extern void lp_cone_objAUV(lorads_lp_cone_data *cone, lorads_lp_dense *uLp, lora
     LORADS_FREE(uv);
 }
 
-extern void lp_cone_scalObj(lorads_lp_cone_data *cone, double alpha){
+__declspec(dllexport) void lp_cone_scalObj(lorads_lp_cone_data *cone, double alpha){
     lorads_int nCol = cone->nCol;
     lorads_int incx = 1;
     double *objMatElem = cone->objMatElem;
     scal(&nCol, &alpha, objMatElem, &incx);
 }
 
-extern void lp_cone_Wsum(lorads_lp_cone_data *cone, double *weight, double *wSum, lorads_int iCol){
+__declspec(dllexport) void lp_cone_Wsum(lorads_lp_cone_data *cone, double *weight, double *wSum, lorads_int iCol){
     cone->lpCol[iCol]->weight_sum(cone->lpCol[iCol]->dataMat, weight, wSum);
 }
 
-extern void lp_cone_ObjCoeffSum(lorads_lp_cone_data *cone, double *res, lorads_int iCol){
+__declspec(dllexport) void lp_cone_ObjCoeffSum(lorads_lp_cone_data *cone, double *res, lorads_int iCol){
     res[0] += cone->objMatElem[iCol];
 }
 
-extern void LORADSSetLpCone(lorads_lp_cone *lp_cone, lorads_int nRows,
+__declspec(dllexport) void LORADSSetLpCone(lorads_lp_cone *lp_cone, lorads_int nRows,
                             lorads_int nLpCols, lorads_int *lpMatBeg,
                             lorads_int *lpMatIdx, double *LpMatElem){
     lp_cone->nCol = nLpCols;

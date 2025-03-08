@@ -6,7 +6,7 @@
 #include "lorads_alg_common.h"
 int MAX_ALM_SUB_ITER;
 
-extern void ALMSetGrad(lorads_solver *ASolver, lorads_sdp_cone *ACone, lorads_sdp_dense *R, lorads_sdp_dense *Grad, lorads_int iCone, double rho)
+__declspec(dllexport) void ALMSetGrad(lorads_solver *ASolver, lorads_sdp_cone *ACone, lorads_sdp_dense *R, lorads_sdp_dense *Grad, lorads_int iCone, double rho)
 {
     LORADS_ZERO(Grad->matElem, double, Grad->nRows * Grad->rank);
     double *M1 = ASolver->var->M1temp;
@@ -38,7 +38,7 @@ extern void ALMSetGrad(lorads_solver *ASolver, lorads_sdp_cone *ACone, lorads_sd
 }
 
 
-extern void ALMCalGrad(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *gradLpDummy, lorads_sdp_dense **R, lorads_sdp_dense **Grad, double *lagNormSquare, double rho)
+__declspec(dllexport) void ALMCalGrad(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *gradLpDummy, lorads_sdp_dense **R, lorads_sdp_dense **Grad, double *lagNormSquare, double rho)
 {
     lorads_int incx = 1;
     double lagNorm2 = 0.0;
@@ -53,7 +53,7 @@ extern void ALMCalGrad(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads
     }
 }
 
-extern void ALMSetGradLP(lorads_solver *ASolver, lorads_lp_cone *lp_cone, lorads_lp_dense *rLp, lorads_lp_dense *Grad, lorads_int iCol, double rho)
+__declspec(dllexport) void ALMSetGradLP(lorads_solver *ASolver, lorads_lp_cone *lp_cone, lorads_lp_dense *rLp, lorads_lp_dense *Grad, lorads_int iCol, double rho)
 {
     Grad->matElem[iCol] = 0.0;
     double *M1 = ASolver->var->M1temp;
@@ -78,7 +78,7 @@ extern void ALMSetGradLP(lorads_solver *ASolver, lorads_lp_cone *lp_cone, lorads
 }
 
 
-extern void ALMCalGradLP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *gradLp, lorads_sdp_dense **R, lorads_sdp_dense **Grad, double *lagNormSquare, double rho)
+__declspec(dllexport) void ALMCalGradLP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *gradLp, lorads_sdp_dense **R, lorads_sdp_dense **Grad, double *lagNormSquare, double rho)
 {
     lorads_int incx = 1;
     double lagNorm2 = 0.0;
@@ -111,7 +111,7 @@ double LORADSnthroot(double base, lorads_int n) {
 
 }
 
-extern lorads_int LORADScubic_equation(double a, double b, double c, double d, double *res){
+__declspec(dllexport) lorads_int LORADScubic_equation(double a, double b, double c, double d, double *res){
     double A = b*b - 3*a*c;
     double B = b*c - 9*a*d;
     double C = c*c - 3*b*d;
@@ -158,7 +158,7 @@ static double functionVal(double a, double b, double c, double d, double x)
     return a * pow(x, 4) + b * pow(x, 3) + c * pow(x, 2) + d * x;
 }
 
-extern lorads_int ALMLineSearch(double rho, lorads_int n, double *lambd, double p1, double p2, double *q0, double *q1, double *q2, double *tau)
+__declspec(dllexport) lorads_int ALMLineSearch(double rho, lorads_int n, double *lambd, double p1, double p2, double *q0, double *q1, double *q2, double *tau)
 {
     lorads_int incx = 1;
     double q2nrm2 = nrm2(&n, q2, &incx);
@@ -227,7 +227,7 @@ extern lorads_int ALMLineSearch(double rho, lorads_int n, double *lambd, double 
     return rootNum;
 }
 
-extern void LBFGSDirection(lorads_params *params, lorads_solver *ASolver, lbfgs_node *head, lorads_lp_dense *gradLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **Grad, lorads_sdp_dense **D, lorads_int innerIter)
+__declspec(dllexport) void LBFGSDirection(lorads_params *params, lorads_solver *ASolver, lbfgs_node *head, lorads_lp_dense *gradLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **Grad, lorads_sdp_dense **D, lorads_int innerIter)
 {
     /*head is oldest info, update head node and move head pointer lorads_into next*/
     lorads_int incx = 1;
@@ -390,7 +390,7 @@ extern void LBFGSDirection(lorads_params *params, lorads_solver *ASolver, lbfgs_
     }
 }
 
-extern void LBFGSDirectionLP(lorads_params *params, lorads_solver *ASolver, lbfgs_node *head, lorads_lp_dense *gradLp, lorads_lp_dense *d, lorads_sdp_dense **Grad, lorads_sdp_dense **D, lorads_int innerIter)
+__declspec(dllexport) void LBFGSDirectionLP(lorads_params *params, lorads_solver *ASolver, lbfgs_node *head, lorads_lp_dense *gradLp, lorads_lp_dense *d, lorads_sdp_dense **Grad, lorads_sdp_dense **D, lorads_int innerIter)
 {
     /*head is oldest info, update head node and move head pointer lorads_into next*/
     lorads_int incx = 1;
@@ -466,7 +466,7 @@ extern void LBFGSDirectionLP(lorads_params *params, lorads_solver *ASolver, lbfg
     return;
 }
 
-extern void LBFGSDirectionUseGrad(lorads_solver *ASolver, lorads_lp_dense *dDummy, lorads_lp_dense *gradLPDummy, lorads_sdp_dense **D, lorads_sdp_dense **Grad)
+__declspec(dllexport) void LBFGSDirectionUseGrad(lorads_solver *ASolver, lorads_lp_dense *dDummy, lorads_lp_dense *gradLPDummy, lorads_sdp_dense **D, lorads_sdp_dense **Grad)
 {
     double innerProduct = 0.0;
     lorads_int nElem = 0;
@@ -488,7 +488,7 @@ extern void LBFGSDirectionUseGrad(lorads_solver *ASolver, lorads_lp_dense *dDumm
     }
 }
 
-extern void LBFGSDirectionUseGradLP(lorads_solver *ASolver, lorads_lp_dense *d, lorads_lp_dense *gradLP, lorads_sdp_dense **D, lorads_sdp_dense **Grad)
+__declspec(dllexport) void LBFGSDirectionUseGradLP(lorads_solver *ASolver, lorads_lp_dense *d, lorads_lp_dense *gradLP, lorads_sdp_dense **D, lorads_sdp_dense **Grad)
 {
     double innerProduct = 0.0;
     lorads_int nElem = 0;
@@ -513,7 +513,7 @@ extern void LBFGSDirectionUseGradLP(lorads_solver *ASolver, lorads_lp_dense *d, 
     }
 }
 
-extern void LORADSConstrValSumALMtemp(lorads_solver *ASolver, double *q1)
+__declspec(dllexport) void LORADSConstrValSumALMtemp(lorads_solver *ASolver, double *q1)
 {
     double alpha = 1.0;
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
@@ -522,7 +522,7 @@ extern void LORADSConstrValSumALMtemp(lorads_solver *ASolver, double *q1)
     }
 }
 
-extern void LORADSConstrValSumALMtempLP(lorads_solver *ASolver, double *q1)
+__declspec(dllexport) void LORADSConstrValSumALMtempLP(lorads_solver *ASolver, double *q1)
 {
     double alpha = 1.0;
     for (lorads_int iCol = 0; iCol < ASolver->nLpCols; ++iCol)
@@ -537,7 +537,7 @@ extern void LORADSConstrValSumALMtempLP(lorads_solver *ASolver, double *q1)
 
 
 
-extern void ALMCalq12p12(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **R, lorads_sdp_dense **D, double *q1, double *q2, double *p12)
+__declspec(dllexport) void ALMCalq12p12(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **R, lorads_sdp_dense **D, double *q1, double *q2, double *p12)
 {
     lorads_int n = ASolver->nRows;
     double one = 1.0;
@@ -560,7 +560,7 @@ extern void ALMCalq12p12(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lora
 }
 
 
-extern void ALMCalq12p12LP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *d, lorads_sdp_dense **R, lorads_sdp_dense **D, double *q1, double *q2, double *p12)
+__declspec(dllexport) void ALMCalq12p12LP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *d, lorads_sdp_dense **R, lorads_sdp_dense **D, double *q1, double *q2, double *p12)
 {
     lorads_int n = ASolver->nRows;
     double one = 1.0;
@@ -580,7 +580,7 @@ extern void ALMCalq12p12LP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_
 }
 
 
-extern void SetyAsNegGrad(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy, lorads_sdp_dense **Grad)
+__declspec(dllexport) void SetyAsNegGrad(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy, lorads_sdp_dense **Grad)
 {
     double minusOne = -1.0;
     lorads_int incx = 1;
@@ -597,7 +597,7 @@ extern void SetyAsNegGrad(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy, 
     }
 }
 
-extern void SetyAsNegGradLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lorads_sdp_dense **Grad)
+__declspec(dllexport) void SetyAsNegGradLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lorads_sdp_dense **Grad)
 {
     double minusOne = -1.0;
     lorads_int incx = 1;
@@ -616,7 +616,7 @@ extern void SetyAsNegGradLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lor
     // idx += gradLp->nCols;
 }
 
-extern void ALMupdateVar(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **R, lorads_sdp_dense **D, double tau)
+__declspec(dllexport) void ALMupdateVar(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **R, lorads_sdp_dense **D, double tau)
 {
     lorads_int incx = 1;
     lorads_int nElem = 0;
@@ -647,14 +647,14 @@ extern void ALMupdateVar(lorads_solver *ASolver, lorads_lp_dense *rLpDummy, lora
 
 }
 
-extern void ALMupdateVarLP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *d, lorads_sdp_dense **R, lorads_sdp_dense **D, double tau)
+__declspec(dllexport) void ALMupdateVarLP(lorads_solver *ASolver, lorads_lp_dense *rLp, lorads_lp_dense *d, lorads_sdp_dense **R, lorads_sdp_dense **D, double tau)
 {
     lorads_int incx = 1;
     ALMupdateVar(ASolver, rLp, d, R, D, tau);
     axpy(&(rLp->nCols), &tau, d->matElem, &incx, rLp->matElem, &incx);
 }
 
-extern void setlbfgsHisTwo(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **Grad, lorads_sdp_dense **D, double tau)
+__declspec(dllexport) void setlbfgsHisTwo(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy, lorads_lp_dense *dDummy, lorads_sdp_dense **Grad, lorads_sdp_dense **D, double tau)
 {
     double minusOne = -1.0;
     double One = 1.0;
@@ -677,7 +677,7 @@ extern void setlbfgsHisTwo(lorads_solver *ASolver, lorads_lp_dense *gradLpDummy,
     ASolver->lbfgsHis = head->next;
 }
 
-extern void setlbfgsHisTwoLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lorads_lp_dense *d, lorads_sdp_dense **Grad, lorads_sdp_dense **D, double tau)
+__declspec(dllexport) void setlbfgsHisTwoLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lorads_lp_dense *d, lorads_sdp_dense **Grad, lorads_sdp_dense **D, double tau)
 {
     double minusOne = -1.0;
     double One = 1.0;
@@ -742,7 +742,7 @@ static void ALMPrintLog(lorads_alm_state *alm_state_pointer, double time){
 #endif
 }
 
-extern lorads_int LORADS_ALMOptimize_reopt(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_iter_state, bool early_stop, double rho_update_factor, double timeSolveStart)
+__declspec(dllexport) lorads_int LORADS_ALMOptimize_reopt(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_iter_state, bool early_stop, double rho_update_factor, double timeSolveStart)
 {
     double ori_start = LUtilGetTimeStamp();
     bool is_rank_max = CheckAllRankMax(ASolver, 1.0);
@@ -988,7 +988,7 @@ extern lorads_int LORADS_ALMOptimize_reopt(lorads_params *params, lorads_solver 
 
 
 
-extern lorads_int LORADS_ALMOptimize(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_iter_state, double rho_update_factor, double timeSolveStart)
+__declspec(dllexport) lorads_int LORADS_ALMOptimize(lorads_params *params, lorads_solver *ASolver, lorads_alm_state *alm_iter_state, double rho_update_factor, double timeSolveStart)
 {
     MAX_ALM_SUB_ITER = 5000;
     double ori_start = LUtilGetTimeStamp();
@@ -1256,7 +1256,7 @@ extern lorads_int LORADS_ALMOptimize(lorads_params *params, lorads_solver *ASolv
 
 
 
-extern void LORADSCalObjRR_ALM(lorads_solver *ASolver){
+__declspec(dllexport) void LORADSCalObjRR_ALM(lorads_solver *ASolver){
     ASolver->pObjVal = 0.0;
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         lorads_sdp_dense *R = ASolver->var->R[iCone];
@@ -1267,7 +1267,7 @@ extern void LORADSCalObjRR_ALM(lorads_solver *ASolver){
     ASolver->pObjVal /= ASolver->scaleObjHis;
 }
 
-extern void LORADSCalObjRR_ALM_LP(lorads_solver *ASolver){
+__declspec(dllexport) void LORADSCalObjRR_ALM_LP(lorads_solver *ASolver){
     ASolver->pObjVal = 0.0;
     ASolver->lpCone->objAUV(ASolver->lpCone->coneData, ASolver->var->rLp, ASolver->var->rLp, &ASolver->pObjVal);
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){

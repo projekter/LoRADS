@@ -17,6 +17,7 @@
 #include "memwatch.h"
 #endif
 
+#include "stdint.h"
 
 // Type define
 #ifdef MAC_INT64
@@ -63,7 +64,7 @@ typedef enum{
 #define RET_CODE_TIME_OUT      (1)
 #define RET_CODE_NUM_ERR       (4)
 #define RET_CODE_BAD_ITER      (8)
-extern int MAX_ALM_SUB_ITER;
+__declspec(dllexport) int MAX_ALM_SUB_ITER;
 
 
 // Build date

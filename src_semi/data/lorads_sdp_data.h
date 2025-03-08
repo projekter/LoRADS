@@ -3,16 +3,16 @@
 
 #include "def_lorads_sdp_data.h"
 
-extern void sdpDataMatCreate(sdp_coeff **psdpCoeff );
-extern void sdpDataMatSetData( sdp_coeff *sdpCoeff, lorads_int nSDPCol, lorads_int dataMatNnz, lorads_int *dataMatIdx, double *dataMatElem );
-extern void sdpDataMatDestroy( sdp_coeff **psdpCoeff );
-extern void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX);
-extern lorads_int hash_function(lorads_int row, lorads_int col, lorads_int size);
-extern void dataMatDenseMV(void *A, double *x, double *y, lorads_int n);
-extern void dataMatSparseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX);
-extern void dataMatSparseMV(void *A, double *x, double *y, lorads_int n);
-extern void dataMatSparseZeros(void *A);
-extern void dataMatSparseScale(void *A, double scaleFactor);
-extern void dataMatDenseZeros(void *A);
-extern void dataMatDenseScale(void *A, double scaleFactor);
+__declspec(dllexport) void sdpDataMatCreate(sdp_coeff **psdpCoeff );
+__declspec(dllexport) void sdpDataMatSetData( sdp_coeff *sdpCoeff, lorads_int nSDPCol, lorads_int dataMatNnz, lorads_int *dataMatIdx, double *dataMatElem );
+__declspec(dllexport) void sdpDataMatDestroy( sdp_coeff **psdpCoeff );
+__declspec(dllexport) void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX);
+__declspec(dllexport) lorads_int hash_function(lorads_int row, lorads_int col, lorads_int size);
+__declspec(dllexport) void dataMatDenseMV(void *A, double *x, double *y, lorads_int n);
+__declspec(dllexport) void dataMatSparseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX);
+__declspec(dllexport) void dataMatSparseMV(void *A, double *x, double *y, lorads_int n);
+__declspec(dllexport) void dataMatSparseZeros(void *A);
+__declspec(dllexport) void dataMatSparseScale(void *A, double scaleFactor);
+__declspec(dllexport) void dataMatDenseZeros(void *A);
+__declspec(dllexport) void dataMatDenseScale(void *A, double scaleFactor);
 #endif

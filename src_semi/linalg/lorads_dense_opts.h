@@ -11,7 +11,6 @@ extern "C" {
 extern void fds_symv( lorads_int n, double alpha, double *A, double *x, double beta, double *y );
 
 extern void fds_symv_L(lorads_int n, double alpha, double *A, double *x, double beta, double *y);
-extern void fds_syev_Min_eig (sdp_coeff *slackVar, double *minEig);
 extern void sps_syev_Min_eig(sdp_coeff *slackVar, double *minEig);
 extern lorads_int fds_syev( lorads_int n, double *U, double *d, double *Y,
                      double *work, lorads_int *iwork, lorads_int lwork, lorads_int liwork );

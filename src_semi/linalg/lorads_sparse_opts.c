@@ -9,9 +9,9 @@
 
 
 extern lorads_int csp_nnz_cols ( lorads_int n, lorads_int *Ap ) {
-    
+
     lorads_int nzcols = 0;
-    
+
     for ( lorads_int i = 0; i < n; ++i ) {
         nzcols += ( Ap[i + 1] - Ap[i] > 0 );
     }

@@ -201,7 +201,7 @@ extern void fds_syev_Min_eig(sdp_coeff *slackVar, double *minEig){
 
 extern lorads_int fds_syev( lorads_int n, double *U, double *d, double *Y,
                      double *work, lorads_int *iwork, lorads_int lwork, lorads_int liwork ) {
-    
+
     char jobz = 'V', range = 'I', uplo = ACharConstantUploUp;
     lorads_int isuppz[4] = {0};
     lorads_int il = n - 1, iu = n;
