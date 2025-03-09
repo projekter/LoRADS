@@ -84,7 +84,6 @@ typedef struct {
     lorads_int     nSDPCol;
     double        *dsMatElem;
 //    lorads_int    **rowCol2NnzIdx;
-    double         *fullMat;   // UVt full matrix, not dataMat full version
 } sdp_coeff_dense;
 
 
