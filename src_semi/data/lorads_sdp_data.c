@@ -9,7 +9,7 @@
 #include "lorads_dense_opts.h"
 
 
-__declspec(dllexport) void statNnz(double *vec, lorads_int n){
+extern void statNnz(double *vec, lorads_int n){
     lorads_int nnz = 0;
     for (lorads_int i = 0; i < n; ++i){
         if (fabs(vec[i]) > 1e-10){
@@ -28,10 +28,6 @@ __declspec(dllexport) void statNnz(double *vec, lorads_int n){
 }
 
 
-__declspec(dllexport) lorads_int hash_function(lorads_int row, lorads_int col, lorads_int size) {
-    return (row + col) % size;
-}
-
 lorads_int find_index(Dict *dict, lorads_int row, lorads_int col) {
     lorads_int hash_index = hash_function(row, col, dict->size);
     DictNode *node = dict->table[hash_index];
@@ -44,7 +40,7 @@ lorads_int find_index(Dict *dict, lorads_int row, lorads_int col) {
     return -1;
 }
 
-__declspec(dllexport) void sdpDataMatClear( sdp_coeff *sdpCoeff ) {
+extern void sdpDataMatClear( sdp_coeff *sdpCoeff ) {
     if ( !sdpCoeff ) {
         return;
     }
@@ -52,7 +48,7 @@ __declspec(dllexport) void sdpDataMatClear( sdp_coeff *sdpCoeff ) {
     LORADS_ZERO(sdpCoeff, sdp_coeff, 1);
 }
 
-__declspec(dllexport) void sdpDataMatDestroy( sdp_coeff **psdpCoeff ) {
+extern void sdpDataMatDestroy( sdp_coeff **psdpCoeff ) {
     if ( !psdpCoeff ) {
         return;
     }
@@ -195,7 +191,7 @@ static void dataMatSparseNrmInf(void *A, double *res){
     res[0] = nrmA;
 }
 
-__declspec(dllexport) void dataMatSparseZeros(void *A){
+extern void dataMatSparseZeros(void *A){
     sdp_coeff_sparse *spA = (sdp_coeff_sparse *) A;
     LORADS_ZERO(spA->triMatElem, double, spA->nTriMatElem);
 }
@@ -205,7 +201,7 @@ static void dataMatSparseStatNnz(lorads_int *nnzStat){
     return;
 }
 
-__declspec(dllexport) void dataMatSparseScale(void *A, double scaleFactor){
+extern void dataMatSparseScale(void *A, double scaleFactor){
     sdp_coeff_sparse *sparse = (sdp_coeff_sparse *)A;
     lorads_int incx = 1;
     scal(&sparse->nTriMatElem, &scaleFactor, sparse->triMatElem, &incx);
@@ -287,13 +283,13 @@ static void dataMatDenseNrmInf(void *A, double *res){
     return;
 }
 
-__declspec(dllexport) void dataMatDenseZeros(void *A){
+extern void dataMatDenseZeros(void *A){
     sdp_coeff_dense *dsA = (sdp_coeff_dense *) A;
     LORADS_ZERO(dsA->dsMatElem, double, dsA->nSDPCol * dsA->nSDPCol);
 }
 
 
-__declspec(dllexport) void dataMatDenseScale(void *A, double scaleFactor){
+extern void dataMatDenseScale(void *A, double scaleFactor){
     // A = A * scaleFactor
     sdp_coeff_dense *dense = (sdp_coeff_dense *)A;
     lorads_int n = dense->nSDPCol * dense->nSDPCol;
@@ -397,7 +393,7 @@ static void dataMatDestroySparseImpl( void **pA ) {
     return;
 }
 
-__declspec(dllexport) void dataMatDestroyDenseImpl( void **pA ) {
+extern void dataMatDestroyDenseImpl( void **pA ) {
     if ( !pA ) {
         return;
     }
@@ -504,7 +500,7 @@ static void dataMatReConstructIndex(void *A, Dict *dict){
 }
 
 
-__declspec(dllexport) void dataMatSparseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX){
+extern void dataMatSparseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX){
     sdp_coeff_sparse *sparse = (sdp_coeff_sparse *) A;
     LORADS_ZERO(AX, double, X->rank * X->nRows);
     lorads_int row, col = 0;
@@ -519,7 +515,7 @@ __declspec(dllexport) void dataMatSparseMultiRkMat(void *A, lorads_sdp_dense *X,
     return;
 }
 
-__declspec(dllexport) void dataMatSparseMV(void *A, double *x, double *y, lorads_int n){
+extern void dataMatSparseMV(void *A, double *x, double *y, lorads_int n){
     sdp_coeff_sparse *sparse = (sdp_coeff_sparse *) A;
     assert(n == sparse->nSDPCol);
     LORADS_ZERO(y, double, n);
@@ -537,7 +533,7 @@ __declspec(dllexport) void dataMatSparseMV(void *A, double *x, double *y, lorads
 }
 
 
-static void sparseAUV(lorads_int n, lorads_int nnzA, lorads_int *Ai, lorads_int *Aj, double *Ax,
+__forceinline void sparseAUV(lorads_int n, lorads_int nnzA, lorads_int *Ai, lorads_int *Aj, double *Ax,
                       lorads_int nnzUVt, lorads_int *UVti, lorads_int *UVtj, double *UVtx, lorads_int *nnzIdx, double *res){
     lorads_int incx = 1;
     lorads_int rowA, colA, rowUVt, colUVt = 0;
@@ -567,7 +563,7 @@ static void sparseAUV(lorads_int n, lorads_int nnzA, lorads_int *Ai, lorads_int 
     }
 }
 
-static void denseAUV(lorads_int nnzA, const lorads_int *Ai, const lorads_int *Aj, double *Ax,
+__forceinline void denseAUV(lorads_int nnzA, const lorads_int *Ai, const lorads_int *Aj, double *Ax,
                      const double *UVtx, lorads_int *nnzIdx, double *res){
     lorads_int rowA, colA, idx = 0;
     double temp = 0.0;
@@ -602,7 +598,7 @@ static void dataMatSparseMultiRkMatInnerProRkMat(void *A, lorads_sdp_dense *U, l
     }
 }
 
-static void dataMatSparseAddDenseSDPCoeff(void *A, void *B, double weight){
+__forceinline void dataMatSparseAddDenseSDPCoeff(void *A, void *B, double weight){
     // B = B + A * weight
     sdp_coeff_sparse *sparse = (sdp_coeff_sparse *) A;
     sdp_coeff_dense *dense = (sdp_coeff_dense *) B;
@@ -630,7 +626,7 @@ static void dataMatSparseAddDenseSDPCoeff(void *A, void *B, double weight){
 
 
 
-static void dataMatSparseAddSparseSDPCoeff(void *A, void *B, double weight){
+__forceinline void dataMatSparseAddSparseSDPCoeff(void *A, void *B, double weight){
     // B = B + weight * A
     sdp_coeff_sparse *sparseA = (sdp_coeff_sparse *) A;
     sdp_coeff_sparse *sparseB = (sdp_coeff_sparse *) B;
@@ -658,7 +654,7 @@ static void dataMatSparseAddSDPCoeff(void *A, void *B, double weight, sdp_coeff_
     }
 }
 
-__declspec(dllexport) void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX){
+extern void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX){
     /*
      AX = A * X, A is dense meanse result is dense
      */
@@ -676,7 +672,7 @@ __declspec(dllexport) void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, 
 #endif
 }
 
-__declspec(dllexport) void dataMatDenseMV(void *A, double *x, double *y, lorads_int n){
+extern void dataMatDenseMV(void *A, double *x, double *y, lorads_int n){
     sdp_coeff_dense *dense = (sdp_coeff_dense *) A;
     double alpha = 1.0;
     double beta = 0.0;
@@ -804,7 +800,7 @@ static void sdpDataMatIChooseType(sdp_coeff *sdpCoeff, sdp_coeff_type dataType )
 }
 
 /* External methods for the SDP data */
-__declspec(dllexport) void sdpDataMatCreate( sdp_coeff **psdpCoeff ) {
+extern void sdpDataMatCreate( sdp_coeff **psdpCoeff ) {
     if ( !psdpCoeff ) {
         LORADS_ERROR_TRACE;
     }
@@ -814,7 +810,7 @@ __declspec(dllexport) void sdpDataMatCreate( sdp_coeff **psdpCoeff ) {
     *psdpCoeff = sdpCoeff;
 }
 
-__declspec(dllexport) void sdpDataMatSetData( sdp_coeff *sdpCoeff, lorads_int nSDPCol, lorads_int dataMatNnz, lorads_int *dataMatIdx, double *dataMatElem ) {
+extern void sdpDataMatSetData( sdp_coeff *sdpCoeff, lorads_int nSDPCol, lorads_int dataMatNnz, lorads_int *dataMatIdx, double *dataMatElem ) {
     // sdpCoeff  : data mat struct
     // nSDPCol   : data mat dimension
     // dataMatNnz: data mat non-zeros number
