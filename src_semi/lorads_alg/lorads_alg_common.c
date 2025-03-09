@@ -50,8 +50,17 @@ extern void LORADSUVt(sdp_coeff *UVt_w_sum, lorads_sdp_dense *U, lorads_sdp_dens
     else if (UVt_w_sum->dataType == SDP_COEFF_DENSE){
         sdp_coeff_dense *dense = (sdp_coeff_dense *)UVt_w_sum->dataMat;
 //        printf("rank: %lld\n", U->rank);
-        // alpha = 0.5, beta = 0.0;
-        fds_syr2k(ACharConstantUploLow, 'N', U->nRows, U->rank, 0.5, U->matElem, V->matElem, 0.0, dense->dsMatElem);
+        char trans = 'N';
+        double alpha = 0.5;
+        double beta = 0.0;
+        #ifdef UNDER_BLAS
+        // C := alpha*A**T*B + alpha*B**T*A + beta*C,
+            dsyr2k_(&ACharConstantUploLow, &trans, &U->nRows, &U->rank, &alpha, U->matElem, &U->nRows, V->matElem, &U->nRows,
+                &beta, dense->dsMatElem, &U->nRows);
+        #else
+            dsyr2k(&ACharConstantUploLow, &trans, &U->nRows, &U->rank, &alpha, U->matElem, &U->nRows, V->matElem, &U->nRows,
+                &beta, dense->dsMatElem, &U->nRows);
+        #endif
     }
 }
 
