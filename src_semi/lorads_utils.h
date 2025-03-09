@@ -66,7 +66,7 @@ __declspec(dllexport) lorads_int LUtilGetGlobalMKLThreads(void);
 __declspec(dllexport) void LUtilSetGlobalMKLThreads(lorads_int nTargetThreads);
 
 __declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter);
-__declspec(dllexport) void REALLOC(double **data, lorads_int nOld, lorads_int nNew);
+__declspec(dllexport) void FREE(void *ptr);
 
 #ifdef __cplusplus
 }

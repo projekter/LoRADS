@@ -460,10 +460,6 @@ __declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double
 //     return result;
 // }
 
-__declspec(dllexport) void REALLOC(double **data, lorads_int nOld, lorads_int nNew){
-    double *dataNewPtr;
-    LORADS_INIT(dataNewPtr, double, nNew);
-    LORADS_MEMCPY(dataNewPtr, *data, double, nOld);
-    LORADS_FREE(*data);
-    *data = dataNewPtr;
+__declspec(dllexport) void FREE(void *data){
+    free(data);
 }
