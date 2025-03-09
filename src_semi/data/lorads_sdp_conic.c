@@ -1304,6 +1304,7 @@ int dual_infeasible(void (*matvec)(void *M, double *x, double *y, lorads_int n),
     int lworkl = 3 * ncv * ncv + 5 * ncv;
     int rvec = 1; // Compute eigenvectors
     char bmat = 'I';
+    char howmany = 'A';
     char which[] = "SA"; // Compute smallest eigenvalue
     int ido = 0;
     int info = 0;
@@ -1315,7 +1316,7 @@ int dual_infeasible(void (*matvec)(void *M, double *x, double *y, lorads_int n),
 
     while (ido != 99)
     {
-        dsaupd_(&ido, &bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
+        dsaupd_c(&ido, &bmat, n, which, nev, tol, resid, ncv, v, n, iparam, ipntr, workd, workl, lworkl, &info);
         if (ido == -1 || ido == 1)
         {
             matvec(M, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1], n);
@@ -1328,7 +1329,7 @@ int dual_infeasible(void (*matvec)(void *M, double *x, double *y, lorads_int n),
         return 1;
     }
 
-    dseupd_(&rvec, "A", select, d, v, &n, NULL, &bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
+    dseupd_c(rvec, &howmany, select, d, v, n, 0., &bmat, n, which, nev, tol, resid, ncv, v, n, iparam, ipntr, workd, workl, lworkl, &info);
     if (info != 0)
     {
         printf("Error with dseupd, info = %d\n", info);

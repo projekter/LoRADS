@@ -28,14 +28,14 @@ __declspec(dllexport) void sdpDenseConeNnzStat(void *coneIn, lorads_int *stat);
 __declspec(dllexport) void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat);
 
 /* Declaration of ARPACK functions */
-extern void dsaupd_(int *ido, char *bmat,  lorads_int *n, char *which,  int *nev, double *tol, double *resid,
-                     int *ncv, double *v,  lorads_int *ldv,  int *iparam,  int *ipntr, double *workd,
-                    double *workl,  int *lworkl,  int *info);
+extern void dsaupd_c(int *ido, char *bmat,  int n, char *which,  int nev, double tol, double *resid,
+                     int ncv, double *v,  int ldv,  int *iparam,  int *ipntr, double *workd,
+                     double *workl,  int lworkl,  int *info);
 
-extern void dseupd_(int *rvec, char *HowMny,  int *select, double *d, double *z,  lorads_int *ldz, double *sigma,
-                    char *bmat,  lorads_int *n, char *which,  int *nev, double *tol, double *resid,
-                     int *ncv, double *v,  lorads_int *ldv,  int *iparam,  int *ipntr, double *workd,
-                    double *workl,  int *lworkl,  int *info);
+extern void dseupd_c(int rvec, char *HowMny,  int *select, double *d, double *z,  int ldz, double sigma,
+                     char *bmat,  int n, char *which,  int nev, double tol, double *resid,
+                     int ncv, double *v,  int ldv,  int *iparam,  int *ipntr, double *workd,
+                     double *workl,  int lworkl,  int *info);
 
 int dual_infeasible(void (*matvec) (void *M, double *x, double *y, lorads_int n), void *M, double *res, lorads_int n);
 
