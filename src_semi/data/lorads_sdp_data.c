@@ -571,9 +571,10 @@ __forceinline void denseAUV(lorads_int nnzA, const lorads_int *Ai, const lorads_
         rowA = Ai[i]; colA = Aj[i];
         idx = nnzIdx[i];
         temp = 2 * Ax[i] * UVtx[idx];
-        res[0] += temp;
-        if (rowA == colA){
-            res[0] -= 0.5 * temp;
+        if (rowA != colA) {
+            res[0] += temp;
+        } else {
+            res[0] += 0.5 * temp;
         }
     }
 }
