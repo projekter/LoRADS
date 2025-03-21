@@ -1,7 +1,6 @@
 #ifndef LORADS_SDP_CONIC
 #define LORADS_SDP_CONIC
 
-
 #include "def_lorads_sdp_conic.h"
 
 __declspec(dllexport) void LORADSSetCone(lorads_solver *ASolver, lorads_int iCone, void *userCone);
@@ -27,16 +26,32 @@ __declspec(dllexport) void sdpDenseConeDataScale(void *coneIn, double scaleFacto
 __declspec(dllexport) void sdpDenseConeNnzStat(void *coneIn, lorads_int *stat);
 __declspec(dllexport) void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat);
 
-/* Declaration of ARPACK functions */
-extern void dsaupd_c(int *ido, char *bmat,  int n, char *which,  int nev, double tol, double *resid,
-                     int ncv, double *v,  int ldv,  int *iparam,  int *ipntr, double *workd,
-                     double *workl,  int lworkl,  int *info);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern void dseupd_c(int rvec, char *HowMny,  int *select, double *d, double *z,  int ldz, double sigma,
-                     char *bmat,  int n, char *which,  int nev, double tol, double *resid,
-                     int ncv, double *v,  int ldv,  int *iparam,  int *ipntr, double *workd,
-                     double *workl,  int lworkl,  int *info);
+#ifdef UNDER_BLAS
+extern void dsyevr_( const char *jobz, const char *range, const char *uplo,
+    const lorads_int  *n, double *a, const lorads_int *lda,
+    const double *vl, const double *vu, const lorads_int *il,
+    const lorads_int *iu, const double *abstol, lorads_int *m,
+    double *w, double *z, const lorads_int *ldz, lorads_int *isuppz,
+    double *work, const lorads_int *lwork, lorads_int *iwork,
+    const lorads_int *liwork, lorads_int *info );
+#else
+extern void dsyevr( const char *jobz, const char *range, const char *uplo,
+    const lorads_int  *n, double *a, const lorads_int *lda,
+    const double *vl, const double *vu, const lorads_int *il,
+    const lorads_int *iu, const double *abstol, lorads_int *m,
+    double *w, double *z, const lorads_int *ldz, lorads_int *isuppz,
+    double *work, const lorads_int *lwork, lorads_int *iwork,
+    const lorads_int *liwork, lorads_int *info );
+#endif
 
-int dual_infeasible(void (*matvec) (void *M, double *x, double *y, lorads_int n), void *M, double *res, lorads_int n);
+#ifdef __cplusplus
+}
+#endif
+
+int dual_infeasible(sdp_coeff_dense *M, double *res);
 
 #endif

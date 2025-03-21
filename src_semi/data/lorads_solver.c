@@ -1028,11 +1028,12 @@ __declspec(dllexport) void calculate_dual_infeasibility_solver(lorads_solver *AS
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         lorads_sdp_cone *ACone = ASolver->SDPCones[iCone];
 
+        assert(ACone->sdp_slack_var->dataType == SDP_COEFF_DENSE);
         ACone->sdp_slack_var->zeros(ACone->sdp_slack_var->dataMat);
         ACone->addObjCoeff(ACone->coneData, ACone->sdp_slack_var);
         ACone->sdpDataWSum(ACone->coneData, negLambd, ACone->sdp_slack_var);
 //        ACone->sdp_slack_var->scaleData(ACone->sdp_slack_var->dataMat,  1e+6);
-        dual_infeasible(ACone->sdp_slack_var->mv, ACone->sdp_slack_var->dataMat, &lp_obj_w_sum, ACone->sdp_slack_var->nSDPCol);
+        dual_infeasible(ACone->sdp_slack_var->dataMat, &lp_obj_w_sum);
         ASolver->dimacError[LORADS_DIMAC_ERROR_DUALFEASIBLE_L1] += LORADS_ABS(LORADS_MIN(lp_obj_w_sum, 0));
     }
     ASolver->dimacError[LORADS_DIMAC_ERROR_DUALFEASIBLE_L1] /= ASolver->scaleObjHis;

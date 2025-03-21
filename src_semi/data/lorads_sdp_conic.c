@@ -1255,68 +1255,66 @@ __declspec(dllexport) void AConeDestroyPresolveData(lorads_sdp_cone *ACone)
     LORADS_FREE(ACone->sdp_obj_sum);
 }
 
-int dual_infeasible(void (*matvec)(void *M, double *x, double *y, lorads_int n), void *M, double *res, lorads_int n)
+int dual_infeasible(sdp_coeff_dense *M, double *res)
 {
-    int nev = 1;  // Number of eigenvalues to compute
-    int ncv = 40; // Number of Arnoldi vectors
-    if (ncv > n)
-    {
-        nev = 1;
-        ncv = 2;
-    }
-    double tol = 1e-2; // Convergence tolerance
-    double *resid = (double *)malloc(n * sizeof(double));
-    double *v = (double *)malloc(n * ncv * sizeof(double));
-    double *workd = (double *)malloc(3 * n * sizeof(double));
-    double *workl = (double *)malloc((3 * ncv * ncv + 6 * ncv) * sizeof(double));
-    int *iparam = (int *)malloc(11 * sizeof(int));
-    int *ipntr = (int *)malloc(14 * sizeof(int));
-    int *select = (int *)malloc(ncv * sizeof(int));
-    double *d = (double *)malloc(nev * sizeof(double));
-    int lworkl = 3 * ncv * ncv + 5 * ncv;
-    int rvec = 1; // Compute eigenvectors
-    char bmat = 'I';
-    char howmany = 'A';
-    char which[] = "SA"; // Compute smallest eigenvalue
-    int ido = 0;
-    int info = 0;
+    lorads_int n = M->nSDPCol;
+    char jobz = 'N';
+    char range = 'I';
+    char uplo = 'L';
+    lorads_int i = 1;
+    lorads_int m = 1;
+    lorads_int info = 0;
+    double tol = 1e-8;
+    double *w = (double *)malloc(n * sizeof(double));
 
-    // Initialize iparam
-    iparam[0] = 1;   // Use exact shift
-    iparam[2] = 600; // Maximum number of iterations
-    iparam[6] = 1;   // Mode 1: A*x = lambda*x
+    lorads_int lwork = -1;
+    lorads_int liwork = -1;
+    double work_query;
+    lorads_int iwork_query;
 
-    while (ido != 99)
-    {
-        dsaupd_c(&ido, &bmat, n, which, nev, tol, resid, ncv, v, n, iparam, ipntr, workd, workl, lworkl, &info);
-        if (ido == -1 || ido == 1)
-        {
-            matvec(M, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1], n);
-        }
-    }
+    #ifdef UNDER_BLAS
+        dsyevr_(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                NULL, NULL, &i, &i, &tol, &m,
+                w, NULL, &i, NULL,
+                &work_query, &lwork, &iwork_query, &liwork,
+                &info);
+    #else
+        dsyevr(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                NULL, NULL, &i, &i, &tol, &m,
+                w, NULL, &i, NULL,
+                &work_query, &lwork, &iwork_query, &liwork,
+                &info);
+    #endif
 
-    if (info < 0)
-    {
-        printf("Error with dsaupd, info = %d\n", info);
+    lwork = (lorads_int)work_query;
+    double *work = (double*)malloc(sizeof(double) * lwork);
+    liwork = iwork_query;
+    lorads_int *iwork = (lorads_int*)malloc(sizeof(lorads_int) * liwork);
+
+    #ifdef UNDER_BLAS
+        dsyevr_(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                NULL, NULL, &i, &i, &tol, &m,
+                w, NULL, &i, NULL,
+                work, &lwork, iwork, &liwork,
+                &info);
+    #else
+        dsyevr(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                NULL, NULL, &i, &i, &tol, &m,
+                w, NULL, &i, NULL,
+                work, &lwork, iwork, &liwork,
+                &info);
+    #endif
+
+    res[0] = w[0];
+    free(w);
+    free(work);
+    free(iwork);
+
+    if ( info !=  0) {
+        printf("Error with dsyevr, info = %d\n", (int)info);
         return 1;
+    } else {
+        return 0;
     }
 
-    dseupd_c(rvec, &howmany, select, d, v, n, 0., &bmat, n, which, nev, tol, resid, ncv, v, n, iparam, ipntr, workd, workl, lworkl, &info);
-    if (info != 0)
-    {
-        printf("Error with dseupd, info = %d\n", info);
-        return 1;
-    }
-
-    res[0] = d[0];
-
-    free(resid);
-    free(v);
-    free(workd);
-    free(workl);
-    free(iparam);
-    free(ipntr);
-    free(select);
-    free(d);
-    return 0;
 }
