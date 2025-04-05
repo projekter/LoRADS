@@ -10,12 +10,12 @@
 #include "lorads_sdp_data.h"
 #include "lorads_vec_opts.h"
 
-__declspec(dllexport) void SDPConeDestroy(lorads_sdp_cone **pACone)
+dllexp void SDPConeDestroy(lorads_sdp_cone **pACone)
 {
     LORADS_FREE(*pACone);
 }
 
-__declspec(dllexport) void sdpSparseConeCreateImpl(void **pConeIn)
+dllexp void sdpSparseConeCreateImpl(void **pConeIn)
 {
     lorads_cone_sdp_sparse **pCone = (lorads_cone_sdp_sparse **)pConeIn;
     LORADS_NULLCHECK(pCone);
@@ -26,7 +26,7 @@ __declspec(dllexport) void sdpSparseConeCreateImpl(void **pConeIn)
     *pCone = cone;
 }
 
-__declspec(dllexport) void sdpDenseConeCreateImpl(void **pConeIn)
+dllexp void sdpDenseConeCreateImpl(void **pConeIn)
 {
     lorads_cone_sdp_dense **pCone = (lorads_cone_sdp_dense **)pConeIn;
 
@@ -39,7 +39,7 @@ __declspec(dllexport) void sdpDenseConeCreateImpl(void **pConeIn)
     *pCone = cone;
 }
 
-__declspec(dllexport) void sdpDenseConeDestroyImpl(void **pConeIn)
+dllexp void sdpDenseConeDestroyImpl(void **pConeIn)
 {
     lorads_cone_sdp_dense **pCone = (lorads_cone_sdp_dense **)pConeIn;
     if (!pCone)
@@ -50,7 +50,7 @@ __declspec(dllexport) void sdpDenseConeDestroyImpl(void **pConeIn)
     LORADS_FREE(*pCone);
 }
 
-__declspec(dllexport) void sdpDenseConeFeatureDetectImpl(void *coneIn, double *rowRHS,
+dllexp void sdpDenseConeFeatureDetectImpl(void *coneIn, double *rowRHS,
                                           lorads_int coneIntFeatures[20], double coneDblFeatures[20])
 {
     /* When there is a single SDP cone. This routine detects if the SDP has the following structures
@@ -126,7 +126,7 @@ __declspec(dllexport) void sdpDenseConeFeatureDetectImpl(void *coneIn, double *r
     return;
 }
 
-__declspec(dllexport) void sdpDenseConePresolveImpl(void *coneIn)
+dllexp void sdpDenseConePresolveImpl(void *coneIn)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
 
@@ -141,7 +141,7 @@ __declspec(dllexport) void sdpDenseConePresolveImpl(void *coneIn)
 /** @brief Set data lorads_into a dense cone
  *
  */
-__declspec(dllexport) void sdpDenseConeProcDataImpl(void *coneIn, lorads_int nRow, lorads_int nCol,
+dllexp void sdpDenseConeProcDataImpl(void *coneIn, lorads_int nRow, lorads_int nCol,
                                      lorads_int *coneMatBeg, lorads_int *coneMatIdx, double *coneMatElem)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
@@ -171,7 +171,7 @@ __declspec(dllexport) void sdpDenseConeProcDataImpl(void *coneIn, lorads_int nRo
     }
 }
 
-__declspec(dllexport) void sdpSparseConeProcDataImpl(void *coneIn, lorads_int nRow, lorads_int nCol,
+dllexp void sdpSparseConeProcDataImpl(void *coneIn, lorads_int nRow, lorads_int nCol,
                                       lorads_int *coneMatBeg, lorads_int *coneMatIdx, double *coneMatElem)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
@@ -226,7 +226,7 @@ __declspec(dllexport) void sdpSparseConeProcDataImpl(void *coneIn, lorads_int nR
 #endif
 }
 
-__declspec(dllexport) void sdpSparseConePresolveImpl(void *coneIn)
+dllexp void sdpSparseConePresolveImpl(void *coneIn)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
 
@@ -236,7 +236,7 @@ __declspec(dllexport) void sdpSparseConePresolveImpl(void *coneIn)
     LORADS_MEMCHECK(preConeAuxi);
     LORADS_FREE(preConeAuxi);
 }
-__declspec(dllexport) void sdpSparseConeFeatureDetectImpl(void *coneIn, double *rowRHS,
+dllexp void sdpSparseConeFeatureDetectImpl(void *coneIn, double *rowRHS,
                                            lorads_int coneIntFeatures[20], double coneDblFeatures[20])
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
@@ -246,7 +246,7 @@ __declspec(dllexport) void sdpSparseConeFeatureDetectImpl(void *coneIn, double *
     return;
 }
 
-__declspec(dllexport) void sdpDenseConeViewImpl(void *coneIn)
+dllexp void sdpDenseConeViewImpl(void *coneIn)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
 #ifdef INT32
@@ -282,7 +282,7 @@ __declspec(dllexport) void sdpDenseConeViewImpl(void *coneIn)
     return;
 }
 
-__declspec(dllexport) void sdpDenseConeAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, sdp_coeff *UVt)
+dllexp void sdpDenseConeAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, sdp_coeff *UVt)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRow; ++iRow)
@@ -291,7 +291,7 @@ __declspec(dllexport) void sdpDenseConeAUVImpl(void *coneIn, lorads_sdp_dense *U
     }
 }
 
-__declspec(dllexport) void sdpDenseObjAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *pObj, sdp_coeff *UVt)
+dllexp void sdpDenseObjAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *pObj, sdp_coeff *UVt)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     double temp = 0.0;
@@ -300,7 +300,7 @@ __declspec(dllexport) void sdpDenseObjAUVImpl(void *coneIn, lorads_sdp_dense *U,
     pObj[0] += temp;
 }
 
-__declspec(dllexport) void sdpDenseConeObjNrm1(void *coneIn, double *objConeNrm1)
+dllexp void sdpDenseConeObjNrm1(void *coneIn, double *objConeNrm1)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     double temp = 0.0;
@@ -308,7 +308,7 @@ __declspec(dllexport) void sdpDenseConeObjNrm1(void *coneIn, double *objConeNrm1
     objConeNrm1[0] += temp;
 }
 
-__declspec(dllexport) void sdpDenseConeObjNrm2Square(void *coneIn, double *objConeNrm2Square)
+dllexp void sdpDenseConeObjNrm2Square(void *coneIn, double *objConeNrm2Square)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     double temp = 0.0;
@@ -316,7 +316,7 @@ __declspec(dllexport) void sdpDenseConeObjNrm2Square(void *coneIn, double *objCo
     objConeNrm2Square[0] += temp;
 }
 
-__declspec(dllexport) void sdpDenseConeObjNrmInf(void *coneIn, double *objConeNrmInf)
+dllexp void sdpDenseConeObjNrmInf(void *coneIn, double *objConeNrmInf)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     double temp = 0.0;
@@ -324,7 +324,7 @@ __declspec(dllexport) void sdpDenseConeObjNrmInf(void *coneIn, double *objConeNr
     objConeNrmInf[0] = LORADS_MAX(temp, objConeNrmInf[0]);
 }
 
-__declspec(dllexport) void sdpDenseConeAddObjCoeff(void *coneIn, sdp_coeff *w_sum)
+dllexp void sdpDenseConeAddObjCoeff(void *coneIn, sdp_coeff *w_sum)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     if (w_sum->dataType == SDP_COEFF_DENSE || w_sum->dataType == SDP_COEFF_SPARSE)
@@ -338,7 +338,7 @@ __declspec(dllexport) void sdpDenseConeAddObjCoeff(void *coneIn, sdp_coeff *w_su
     }
 }
 
-__declspec(dllexport) void sdpDenseConeAddObjCoeffRand(void *coneIn, sdp_coeff *w_sum)
+dllexp void sdpDenseConeAddObjCoeffRand(void *coneIn, sdp_coeff *w_sum)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     if (w_sum->dataType == SDP_COEFF_DENSE || w_sum->dataType == SDP_COEFF_SPARSE)
@@ -352,7 +352,7 @@ __declspec(dllexport) void sdpDenseConeAddObjCoeffRand(void *coneIn, sdp_coeff *
     }
 }
 
-__declspec(dllexport) void sdpDenseConeDataScale(void *coneIn, double scaleFactorSDPData)
+dllexp void sdpDenseConeDataScale(void *coneIn, double scaleFactorSDPData)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRow; ++iRow)
@@ -361,13 +361,13 @@ __declspec(dllexport) void sdpDenseConeDataScale(void *coneIn, double scaleFacto
     }
 }
 
-__declspec(dllexport) void sdpDenseConeObjScale(void *coneIn, double scaleFactorObj)
+dllexp void sdpDenseConeObjScale(void *coneIn, double scaleFactorObj)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     cone->sdpObj->scaleData(cone->sdpObj->dataMat, scaleFactorObj);
 }
 
-__declspec(dllexport) void sdpDenseConeNnzStat(void *coneIn, lorads_int *stat)
+dllexp void sdpDenseConeNnzStat(void *coneIn, lorads_int *stat)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRow; ++iRow)
@@ -376,7 +376,7 @@ __declspec(dllexport) void sdpDenseConeNnzStat(void *coneIn, lorads_int *stat)
     }
 }
 
-__declspec(dllexport) void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat)
+dllexp void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     lorads_int coeffNum = cone->sdpRow[0]->nSDPCol * (cone->sdpRow[0]->nSDPCol + 1) / 2;
@@ -389,7 +389,7 @@ __declspec(dllexport) void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, 
     }
 }
 
-__declspec(dllexport) void sdpDenseNnzStatAndDenseDetect(void *coneIn, lorads_int *nnz, bool *isDense)
+dllexp void sdpDenseNnzStatAndDenseDetect(void *coneIn, lorads_int *nnz, bool *isDense)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     lorads_int nnzCoeff = cone->sdpObj->getnnz(cone->sdpObj->dataMat);
@@ -409,7 +409,7 @@ __declspec(dllexport) void sdpDenseNnzStatAndDenseDetect(void *coneIn, lorads_in
     }
 }
 
-__declspec(dllexport) void sdpDenseCollectNnzPos(void *coneIn, lorads_int *nnzPosRow, lorads_int *nnzPosCol)
+dllexp void sdpDenseCollectNnzPos(void *coneIn, lorads_int *nnzPosRow, lorads_int *nnzPosCol)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     lorads_int idxStart = 0;
@@ -420,7 +420,7 @@ __declspec(dllexport) void sdpDenseCollectNnzPos(void *coneIn, lorads_int *nnzPo
     }
 }
 
-__declspec(dllexport) void sdpDenseReConstructIndex(void *coneIn, Dict *dict)
+dllexp void sdpDenseReConstructIndex(void *coneIn, Dict *dict)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     if (cone->sdpObj->dataType == SDP_COEFF_SPARSE)
@@ -434,7 +434,7 @@ __declspec(dllexport) void sdpDenseReConstructIndex(void *coneIn, Dict *dict)
     }
 }
 
-__declspec(dllexport) void sdpDenseDataWeightSumImpl(void *coneIn, double *weight, sdp_coeff *sdp_data)
+dllexp void sdpDenseDataWeightSumImpl(void *coneIn, double *weight, sdp_coeff *sdp_data)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRow; ++iRow)
@@ -444,7 +444,7 @@ __declspec(dllexport) void sdpDenseDataWeightSumImpl(void *coneIn, double *weigh
     }
 }
 
-__declspec(dllexport) void sdpSparseConeViewImpl(void *coneIn)
+dllexp void sdpSparseConeViewImpl(void *coneIn)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
 #ifdef LORADS_INT32
@@ -495,7 +495,7 @@ __declspec(dllexport) void sdpSparseConeViewImpl(void *coneIn)
     return;
 }
 
-__declspec(dllexport) void sdpSparseConeAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, sdp_coeff *UVt)
+dllexp void sdpSparseConeAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, sdp_coeff *UVt)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
@@ -504,7 +504,7 @@ __declspec(dllexport) void sdpSparseConeAUVImpl(void *coneIn, lorads_sdp_dense *
     }
 }
 
-__declspec(dllexport) void sdpSparseObjAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *pObj, sdp_coeff *UVt)
+dllexp void sdpSparseObjAUVImpl(void *coneIn, lorads_sdp_dense *U, lorads_sdp_dense *V, double *pObj, sdp_coeff *UVt)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     double temp = 0.0;
@@ -512,7 +512,7 @@ __declspec(dllexport) void sdpSparseObjAUVImpl(void *coneIn, lorads_sdp_dense *U
     pObj[0] += temp;
 }
 
-__declspec(dllexport) void sdpSparseConeObjNrm1(void *coneIn, double *objConeNrm1)
+dllexp void sdpSparseConeObjNrm1(void *coneIn, double *objConeNrm1)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     double temp = 0.0;
@@ -520,7 +520,7 @@ __declspec(dllexport) void sdpSparseConeObjNrm1(void *coneIn, double *objConeNrm
     objConeNrm1[0] += temp;
 }
 
-__declspec(dllexport) void sdpSparseConeObjNrm2Square(void *coneIn, double *objConeNrm2Square)
+dllexp void sdpSparseConeObjNrm2Square(void *coneIn, double *objConeNrm2Square)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     double temp = 0.0;
@@ -528,7 +528,7 @@ __declspec(dllexport) void sdpSparseConeObjNrm2Square(void *coneIn, double *objC
     objConeNrm2Square[0] += temp;
 }
 
-__declspec(dllexport) void sdpSparseConeObjNrmInf(void *coneIn, double *objConeNrmInf)
+dllexp void sdpSparseConeObjNrmInf(void *coneIn, double *objConeNrmInf)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     double temp = 0.0;
@@ -536,19 +536,19 @@ __declspec(dllexport) void sdpSparseConeObjNrmInf(void *coneIn, double *objConeN
     objConeNrmInf[0] = LORADS_MAX(temp, objConeNrmInf[0]);
 }
 
-__declspec(dllexport) void sdpSparseConeAddObjCoeff(void *pConeIn, sdp_coeff *w_sum)
+dllexp void sdpSparseConeAddObjCoeff(void *pConeIn, sdp_coeff *w_sum)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     cone->sdpObj->add_sdp_coeff(cone->sdpObj->dataMat, w_sum->dataMat, 1.0, w_sum->dataType);
 }
 
-__declspec(dllexport) void sdpSparseConeAddObjCoeffRand(void *pConeIn, sdp_coeff *w_sum)
+dllexp void sdpSparseConeAddObjCoeffRand(void *pConeIn, sdp_coeff *w_sum)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     cone->sdpObj->add_sdp_coeff(cone->sdpObj->dataMat, w_sum->dataMat, rand(), w_sum->dataType);
 }
 
-__declspec(dllexport) void sdpSparseConeNnzStat(void *pConeIn, lorads_int *stat)
+dllexp void sdpSparseConeNnzStat(void *pConeIn, lorads_int *stat)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
@@ -557,7 +557,7 @@ __declspec(dllexport) void sdpSparseConeNnzStat(void *pConeIn, lorads_int *stat)
     }
 }
 
-__declspec(dllexport) void sdpSparseConeNnzStatCoeff(void *pConeIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat)
+dllexp void sdpSparseConeNnzStatCoeff(void *pConeIn, double *stat, lorads_int *nnzStat, lorads_int *eleStat)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     lorads_int statSum = cone->sdpRow[0]->nSDPCol * (cone->sdpRow[0]->nSDPCol + 1) / 2;
@@ -570,7 +570,7 @@ __declspec(dllexport) void sdpSparseConeNnzStatCoeff(void *pConeIn, double *stat
     }
 }
 
-__declspec(dllexport) void sdpSparseNnzStatAndDenseDetect(void *pConeIn, lorads_int *nnz, bool *isDense)
+dllexp void sdpSparseNnzStatAndDenseDetect(void *pConeIn, lorads_int *nnz, bool *isDense)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     lorads_int nnzCoeff = cone->sdpObj->getnnz(cone->sdpObj->dataMat);
@@ -591,7 +591,7 @@ __declspec(dllexport) void sdpSparseNnzStatAndDenseDetect(void *pConeIn, lorads_
     nnz[0] += nnzSum;
 }
 
-__declspec(dllexport) void sdpSparseCollectNnzPos(void *pConeIn, lorads_int *nnzPosRow, lorads_int *nnzPosCol)
+dllexp void sdpSparseCollectNnzPos(void *pConeIn, lorads_int *nnzPosRow, lorads_int *nnzPosCol)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     lorads_int idxStart = 0;
@@ -602,7 +602,7 @@ __declspec(dllexport) void sdpSparseCollectNnzPos(void *pConeIn, lorads_int *nnz
     }
 }
 
-__declspec(dllexport) void sdpSparseReConstructIndex(void *pConeIn, Dict *dict)
+dllexp void sdpSparseReConstructIndex(void *pConeIn, Dict *dict)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     if (cone->sdpObj->dataType == SDP_COEFF_SPARSE)
@@ -615,7 +615,7 @@ __declspec(dllexport) void sdpSparseReConstructIndex(void *pConeIn, Dict *dict)
     }
 }
 
-__declspec(dllexport) void sdpSparseConeDataScale(void *pConeIn, double scaleFactorSDPData)
+dllexp void sdpSparseConeDataScale(void *pConeIn, double scaleFactorSDPData)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     for (lorads_int iRow = 0; iRow < cone->nRow; ++iRow)
@@ -624,13 +624,13 @@ __declspec(dllexport) void sdpSparseConeDataScale(void *pConeIn, double scaleFac
     }
 }
 
-__declspec(dllexport) void sdpSparseConeObjScale(void *pConeIn, double scaleFactorObj)
+dllexp void sdpSparseConeObjScale(void *pConeIn, double scaleFactorObj)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)pConeIn;
     cone->sdpObj->scaleData(cone->sdpObj->dataMat, scaleFactorObj);
 }
 
-__declspec(dllexport) void sdpSparseDataWeightSumImpl(void *coneIn, double *weight, sdp_coeff *sdp_data)
+dllexp void sdpSparseDataWeightSumImpl(void *coneIn, double *weight, sdp_coeff *sdp_data)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
@@ -640,7 +640,7 @@ __declspec(dllexport) void sdpSparseDataWeightSumImpl(void *coneIn, double *weig
     }
 }
 
-__declspec(dllexport) void sdpSparseConeClearImpl(void *coneIn)
+dllexp void sdpSparseConeClearImpl(void *coneIn)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
 
@@ -664,7 +664,7 @@ __declspec(dllexport) void sdpSparseConeClearImpl(void *coneIn)
     return;
 }
 
-__declspec(dllexport) void sdpSparseConeDestroyImpl(void **coneIn)
+dllexp void sdpSparseConeDestroyImpl(void **coneIn)
 {
     lorads_cone_sdp_sparse **pCone = (lorads_cone_sdp_sparse **)coneIn;
     if (!pCone)
@@ -676,7 +676,7 @@ __declspec(dllexport) void sdpSparseConeDestroyImpl(void **coneIn)
     return;
 }
 
-__declspec(dllexport) void sdpDenseConeClearImpl(void *coneIn)
+dllexp void sdpDenseConeClearImpl(void *coneIn)
 {
     lorads_cone_sdp_dense *cone = (lorads_cone_sdp_dense *)coneIn;
     if (!cone)
@@ -693,7 +693,7 @@ __declspec(dllexport) void sdpDenseConeClearImpl(void *coneIn)
     return;
 }
 
-__declspec(dllexport) void LConeSetData(lorads_sdp_cone *ACone, user_data *usrData)
+dllexp void LConeSetData(lorads_sdp_cone *ACone, user_data *usrData)
 {
     ACone->usrData = usrData;
     ACone->type = LUserDataChooseCone(usrData);
@@ -750,12 +750,12 @@ __declspec(dllexport) void LConeSetData(lorads_sdp_cone *ACone, user_data *usrDa
     }
 }
 
-__declspec(dllexport) void LORADSSetCone(lorads_solver *ASolver, lorads_int iCone, void *userCone)
+dllexp void LORADSSetCone(lorads_solver *ASolver, lorads_int iCone, void *userCone)
 {
     LConeSetData(ASolver->SDPCones[iCone], userCone);
 }
 
-__declspec(dllexport) void AConeProcData(lorads_sdp_cone *ACone)
+dllexp void AConeProcData(lorads_sdp_cone *ACone)
 {
     user_data *usrData = (user_data *)ACone->usrData;
     ACone->coneCreate(&ACone->coneData); // create a null coneData
@@ -763,7 +763,7 @@ __declspec(dllexport) void AConeProcData(lorads_sdp_cone *ACone)
                         usrData->coneMatBeg, usrData->coneMatIdx, usrData->coneMatElem);
 }
 
-__declspec(dllexport) void destroyForAuxiDense(void **pA)
+dllexp void destroyForAuxiDense(void **pA)
 {
     sdp_coeff_dense *dense = (sdp_coeff_dense *)pA;
     LORADS_FREE(dense->dsMatElem);
@@ -864,7 +864,7 @@ void free_dict(Dict *dict)
     free(dict);
 }
 
-__declspec(dllexport) void AConePresolveData(lorads_sdp_cone *ACone, lorads_int Dim)
+dllexp void AConePresolveData(lorads_sdp_cone *ACone, lorads_int Dim)
 {
     ACone->conePresolveData(ACone->coneData);
     sdp_coeff *w_sum;
@@ -1058,7 +1058,7 @@ __declspec(dllexport) void AConePresolveData(lorads_sdp_cone *ACone, lorads_int 
     }
 }
 
-__declspec(dllexport) void LORADSSumSDPData(lorads_solver *ASolver)
+dllexp void LORADSSumSDPData(lorads_solver *ASolver)
 {
     // sum all sdp_coeff in ACone->sdp_coeff_w_sum
     // for choosing proper calculation in CG
@@ -1083,7 +1083,7 @@ __declspec(dllexport) void LORADSSumSDPData(lorads_solver *ASolver)
     LORADS_FREE(weight);
 }
 
-__declspec(dllexport) void destroyForAuxiSparse(void **pA)
+dllexp void destroyForAuxiSparse(void **pA)
 {
     sdp_coeff_sparse *sparse = (sdp_coeff_sparse *)pA;
     LORADS_FREE(sparse->triMatCol);
@@ -1096,7 +1096,7 @@ __declspec(dllexport) void destroyForAuxiSparse(void **pA)
     LORADS_FREE(pA);
 }
 
-__declspec(dllexport) void AConeDenseDetectSparsity(sdp_coeff **sdp_coeff_w_sum_pointer)
+dllexp void AConeDenseDetectSparsity(sdp_coeff **sdp_coeff_w_sum_pointer)
 {
     // add modify sdp_coeff_w_sum if spRatio is smaller than 0.1
     sdp_coeff *sdp_coeff_w_sum = *sdp_coeff_w_sum_pointer;
@@ -1234,7 +1234,7 @@ static void modifySlackVar(sdp_coeff *w_sum, sdp_coeff **slackVarPointer)
         LORADS_FREE(dense);
     }
 }
-__declspec(dllexport) void LORADSDetectSparsityOfSumSDP(lorads_solver *ASolver)
+dllexp void LORADSDetectSparsityOfSumSDP(lorads_solver *ASolver)
 {
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
     {
@@ -1245,7 +1245,7 @@ __declspec(dllexport) void LORADSDetectSparsityOfSumSDP(lorads_solver *ASolver)
     }
 }
 
-__declspec(dllexport) void AConeDestroyPresolveData(lorads_sdp_cone *ACone)
+dllexp void AConeDestroyPresolveData(lorads_sdp_cone *ACone)
 {
     ACone->sdp_coeff_w_sum->destroy(ACone->sdp_coeff_w_sum->dataMat);
     LORADS_FREE(ACone->sdp_coeff_w_sum);

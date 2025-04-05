@@ -8,7 +8,7 @@
 #include "memwatch.h"
 #endif
 
-__declspec(dllexport) void LORADSCGSolverCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr){
+dllexp void LORADSCGSolverCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr){
     /*  create a cg solver for one cone
         blkDim is the dimension of cone: n
         rank is the rank of cone: r
@@ -46,7 +46,7 @@ __declspec(dllexport) void LORADSCGSolverCreate(lorads_cg_linsys **pCGSolver, lo
 }
 
 
-__declspec(dllexport) void LORADSCGSolverReCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr){
+dllexp void LORADSCGSolverReCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr){
     lorads_cg_linsys *cg = *pCGSolver;
     lorads_int nr = blkDim * rank;
     cg->nr = nr; // set dimension of liear system
@@ -69,7 +69,7 @@ __declspec(dllexport) void LORADSCGSolverReCreate(lorads_cg_linsys **pCGSolver, 
 }
 
 
-__declspec(dllexport) void CGSetData(lorads_cg_linsys *cg, void *MMat, void (*Mvec) (void *, double *, double *)){
+dllexp void CGSetData(lorads_cg_linsys *cg, void *MMat, void (*Mvec) (void *, double *, double *)){
 //    if (cg->MMat || cg->Mvec){
 //        return;
 //    }
@@ -78,7 +78,7 @@ __declspec(dllexport) void CGSetData(lorads_cg_linsys *cg, void *MMat, void (*Mv
 }
 
 
-__declspec(dllexport) void CGSolve(void *linSys, double *x, double *b, double cg_tol, lorads_int cg_maxIter){
+dllexp void CGSolve(void *linSys, double *x, double *b, double cg_tol, lorads_int cg_maxIter){
 
     lorads_cg_linsys *cg = (lorads_cg_linsys *)linSys;
     cg->solStatus = CG_ITER_STATUS_MAXITER; // Initialize to max iter
@@ -239,7 +239,7 @@ __declspec(dllexport) void CGSolve(void *linSys, double *x, double *b, double cg
     cg->solveTime += cg->cgDuration;
 }
 
-__declspec(dllexport) void CGSolverClear(void *pCGSolver){
+dllexp void CGSolverClear(void *pCGSolver){
     if ( !pCGSolver ) {
         return;
     }
@@ -255,7 +255,7 @@ __declspec(dllexport) void CGSolverClear(void *pCGSolver){
 }
 
 
-__declspec(dllexport) void LORADSCGDestroy(lorads_solver *ASolver)
+dllexp void LORADSCGDestroy(lorads_solver *ASolver)
 {
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
     {

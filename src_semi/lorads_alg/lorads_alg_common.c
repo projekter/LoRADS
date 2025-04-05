@@ -6,7 +6,7 @@
 #include "lorads_dense_opts.h"
 #include "lorads_admm.h"
 
-__declspec(dllexport) void valRes(void *constrVal, vecType type, double **res)
+dllexp void valRes(void *constrVal, vecType type, double **res)
 {
     if (type == LORADS_DENSE_VEC){
         dense_vec *dense = (dense_vec *)constrVal;
@@ -18,7 +18,7 @@ __declspec(dllexport) void valRes(void *constrVal, vecType type, double **res)
     }
 }
 
-__declspec(dllexport) void LORADSUVt(sdp_coeff *UVt_w_sum, lorads_sdp_dense *U, lorads_sdp_dense *V){
+dllexp void LORADSUVt(sdp_coeff *UVt_w_sum, lorads_sdp_dense *U, lorads_sdp_dense *V){
     /* sdp_coeff_w_sum is the sum of all sdp data in the cone,
      It has two data type
      - sparse: means most all sdp data coeff is sparse
@@ -65,14 +65,14 @@ __declspec(dllexport) void LORADSUVt(sdp_coeff *UVt_w_sum, lorads_sdp_dense *U, 
 }
 
 
-__declspec(dllexport) void LORADSInitConstrVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal)
+dllexp void LORADSInitConstrVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal)
 {
     LORADSUVt(ACone->sdp_coeff_w_sum, U, V);
     // Calculate Constraint Value for one cone
     ACone->coneAUV(ACone->coneData, U, V, constrVal, ACone->sdp_coeff_w_sum);
 }
 
-__declspec(dllexport) void LORADSInitConstrValAll(lorads_solver *ASolver, lorads_lp_dense *uLpDummy, lorads_lp_dense *vLpDummy, lorads_sdp_dense **U, lorads_sdp_dense **V){
+dllexp void LORADSInitConstrValAll(lorads_solver *ASolver, lorads_lp_dense *uLpDummy, lorads_lp_dense *vLpDummy, lorads_sdp_dense **U, lorads_sdp_dense **V){
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         double *constrVal;
         valRes(ASolver->var->constrVal[iCone]->data, ASolver->var->constrVal[iCone]->type, &constrVal);
@@ -80,7 +80,7 @@ __declspec(dllexport) void LORADSInitConstrValAll(lorads_solver *ASolver, lorads
     }
 }
 
-__declspec(dllexport) void LORADSInitConstrValAllLP(lorads_solver *ASolver, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_sdp_dense **U, lorads_sdp_dense **V)
+dllexp void LORADSInitConstrValAllLP(lorads_solver *ASolver, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_sdp_dense **U, lorads_sdp_dense **V)
 {
     lorads_lp_cone *lpCone = ASolver->lpCone;
     LORADSInitConstrValAll(ASolver, uLp, vLp, U, V);
@@ -91,7 +91,7 @@ __declspec(dllexport) void LORADSInitConstrValAllLP(lorads_solver *ASolver, lora
     }
 }
 
-__declspec(dllexport) void LORADSInitConstrValObjVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, double *UVobjVal){
+dllexp void LORADSInitConstrValObjVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, double *constrVal, double *UVobjVal){
     LORADSUVt(ACone->sdp_obj_sum, U, V);
     // Calculate Constraint Value for one cone
     ACone->objAUV(ACone->coneData, U, V, UVobjVal, ACone->sdp_obj_sum);
@@ -99,7 +99,7 @@ __declspec(dllexport) void LORADSInitConstrValObjVal(lorads_sdp_cone *ACone, lor
     ACone->coneAUV(ACone->coneData, U, V, constrVal, ACone->sdp_obj_sum);
 }
 
-__declspec(dllexport) void LORADSObjConstrValAll(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, double *UVobjVal){
+dllexp void LORADSObjConstrValAll(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, double *UVobjVal){
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         ASolver->var->constrVal[iCone]->zero(ASolver->var->constrVal[iCone]->data);
         double *constrVal;
@@ -108,7 +108,7 @@ __declspec(dllexport) void LORADSObjConstrValAll(lorads_solver *ASolver, lorads_
     }
 }
 
-__declspec(dllexport) void LORADSObjConstrValAllLP(lorads_solver *ASolver, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_sdp_dense **U, lorads_sdp_dense **V, double *UVobjVal)
+dllexp void LORADSObjConstrValAllLP(lorads_solver *ASolver, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_sdp_dense **U, lorads_sdp_dense **V, double *UVobjVal)
 {
     ASolver->lpCone->objAUV(ASolver->lpCone->coneData, uLp, vLp, UVobjVal);
     for (lorads_int iCol = 0; iCol < uLp->nCols; ++iCol)
@@ -120,7 +120,7 @@ __declspec(dllexport) void LORADSObjConstrValAllLP(lorads_solver *ASolver, lorad
     LORADSObjConstrValAll(ASolver, U, V, UVobjVal);
 }
 
-__declspec(dllexport) void LORADSUpdateConstrVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, lorads_vec *constrVal)
+dllexp void LORADSUpdateConstrVal(lorads_sdp_cone *ACone, lorads_sdp_dense *U, lorads_sdp_dense *V, lorads_vec *constrVal)
 {
     // constrVal = Acal(UVt)
     double *constrValRes;
@@ -128,7 +128,7 @@ __declspec(dllexport) void LORADSUpdateConstrVal(lorads_sdp_cone *ACone, lorads_
     LORADSInitConstrVal(ACone, U, V, constrValRes);
 }
 
-__declspec(dllexport) void LORADSInitConstrValSum(lorads_solver *ASolver)
+dllexp void LORADSInitConstrValSum(lorads_solver *ASolver)
 {
     LORADS_ZERO(ASolver->var->constrValSum, double, ASolver->nRows);
     double alpha = 1.0;
@@ -138,7 +138,7 @@ __declspec(dllexport) void LORADSInitConstrValSum(lorads_solver *ASolver)
     }
 }
 
-__declspec(dllexport) void LORADSInitConstrValSumLP(lorads_solver *ASolver)
+dllexp void LORADSInitConstrValSumLP(lorads_solver *ASolver)
 {
     LORADS_ZERO(ASolver->var->constrValSum, double, ASolver->nRows);
     double alpha = 1.0;
@@ -154,7 +154,7 @@ __declspec(dllexport) void LORADSInitConstrValSumLP(lorads_solver *ASolver)
 }
 
 
-__declspec(dllexport) void copyRtoV(lorads_lp_dense *rLpDummy, lorads_lp_dense *vlpDummy, lorads_sdp_dense **R, lorads_sdp_dense **V, lorads_int nCones)
+dllexp void copyRtoV(lorads_lp_dense *rLpDummy, lorads_lp_dense *vlpDummy, lorads_sdp_dense **R, lorads_sdp_dense **V, lorads_int nCones)
 {
     lorads_int n = 0;
     for (lorads_int iCone = 0; iCone < nCones; ++iCone)
@@ -166,7 +166,7 @@ __declspec(dllexport) void copyRtoV(lorads_lp_dense *rLpDummy, lorads_lp_dense *
 
 
 
-__declspec(dllexport) void copyRtoVLP(lorads_lp_dense *rLp, lorads_lp_dense *vlp, lorads_sdp_dense **R, lorads_sdp_dense **V, lorads_int nCones)
+dllexp void copyRtoVLP(lorads_lp_dense *rLp, lorads_lp_dense *vlp, lorads_sdp_dense **R, lorads_sdp_dense **V, lorads_int nCones)
 {
     lorads_int n = 0;
     LORADS_MEMCPY(vlp->matElem, rLp->matElem, double, vlp->nCols);
@@ -181,7 +181,7 @@ __declspec(dllexport) void copyRtoVLP(lorads_lp_dense *rLp, lorads_lp_dense *vlp
 
 
 
-__declspec(dllexport) void LORADSUpdateSDPVar(lorads_solver *ASolver, double rho, double CG_tol, lorads_int CG_maxIter){
+dllexp void LORADSUpdateSDPVar(lorads_solver *ASolver, double rho, double CG_tol, lorads_int CG_maxIter){
     double minusOne = -1.0;
     double one = 1.0;
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone)
@@ -212,14 +212,14 @@ __declspec(dllexport) void LORADSUpdateSDPVar(lorads_solver *ASolver, double rho
 }
 
 
-__declspec(dllexport) void LORADSUpdateConstrValLP(lorads_lp_cone *lp_cone, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_vec *constrVal, lorads_int iCol)
+dllexp void LORADSUpdateConstrValLP(lorads_lp_cone *lp_cone, lorads_lp_dense *uLp, lorads_lp_dense *vLp, lorads_vec *constrVal, lorads_int iCol)
 {
     double *constrValRes;
     valRes(constrVal->data, constrVal->type, &constrValRes);
     lp_cone->coneAUV(lp_cone->coneData, uLp, vLp, constrValRes, iCol);
 }
 
-__declspec(dllexport) void LORADSUpdateSDPLPVar(lorads_solver *ASolver, double rho, double CG_tol, lorads_int CG_maxIter){
+dllexp void LORADSUpdateSDPLPVar(lorads_solver *ASolver, double rho, double CG_tol, lorads_int CG_maxIter){
     double minusOne = -1.0;
     double one = 1.0;
     LORADSUpdateSDPVar(ASolver, rho, CG_tol, CG_maxIter);
@@ -244,7 +244,7 @@ __declspec(dllexport) void LORADSUpdateSDPLPVar(lorads_solver *ASolver, double r
     }
 }
 
-__declspec(dllexport) void primalInfeasibility(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
+dllexp void primalInfeasibility(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
     LORADSInitConstrValAll(ASolver, r, r2, R, R2);
     LORADSInitConstrValSum(ASolver);
     double one = 1.0;
@@ -254,7 +254,7 @@ __declspec(dllexport) void primalInfeasibility(lorads_solver *ASolver, lorads_sd
     ASolver->dimacError[LORADS_DIMAC_ERROR_CONSTRVIO_L1] = nrm2(&ASolver->nRows, ASolver->constrVio, &incx) / (1 + ASolver->bRHSNrm1);
 }
 
-__declspec(dllexport) void primalInfeasibilityLP(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
+dllexp void primalInfeasibilityLP(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
     LORADSInitConstrValAllLP(ASolver, r, r2, R, R2);
     LORADSInitConstrValSumLP(ASolver);
     double one = 1.0;
@@ -264,19 +264,19 @@ __declspec(dllexport) void primalInfeasibilityLP(lorads_solver *ASolver, lorads_
     ASolver->dimacError[LORADS_DIMAC_ERROR_CONSTRVIO_L1] = nrm2(&ASolver->nRows, ASolver->constrVio, &incx) / (1 + ASolver->bRHSNrm1);
 }
 
-__declspec(dllexport) void LORADSUpdateDimacsErrorALM(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
+dllexp void LORADSUpdateDimacsErrorALM(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
     primalInfeasibility(ASolver, R, R2, r, r2);
     double gap = (ASolver->pObjVal - ASolver->dObjVal);
     ASolver->dimacError[LORADS_DIMAC_ERROR_PDGAP] = LORADS_ABS(gap) / (1 + LORADS_ABS(ASolver->pObjVal) + LORADS_ABS(ASolver->dObjVal));
 }
 
-__declspec(dllexport) void LORADSUpdateDimacsErrorALMLP(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
+dllexp void LORADSUpdateDimacsErrorALMLP(lorads_solver *ASolver, lorads_sdp_dense **R, lorads_sdp_dense **R2, lorads_lp_dense *r, lorads_lp_dense *r2){
     primalInfeasibilityLP(ASolver, R, R2, r, r2);
     double gap = (ASolver->pObjVal - ASolver->dObjVal);
     ASolver->dimacError[LORADS_DIMAC_ERROR_PDGAP] = LORADS_ABS(gap) / (1 + LORADS_ABS(ASolver->pObjVal) + LORADS_ABS(ASolver->dObjVal));
 }
 
-__declspec(dllexport) void LORADSUpdateDimacsErrorADMM(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, lorads_lp_dense *u, lorads_lp_dense *v){
+dllexp void LORADSUpdateDimacsErrorADMM(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, lorads_lp_dense *u, lorads_lp_dense *v){
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         averageUV(U[iCone], V[iCone], ASolver->var->R[iCone]);
     }
@@ -286,7 +286,7 @@ __declspec(dllexport) void LORADSUpdateDimacsErrorADMM(lorads_solver *ASolver, l
     ASolver->dimacError[LORADS_DIMAC_ERROR_PDGAP] = LORADS_ABS(gap) / (1 + LORADS_ABS(ASolver->pObjVal) + LORADS_ABS(ASolver->dObjVal));
 }
 
-__declspec(dllexport) void LORADSUpdateDimacsErrorADMMLP(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, lorads_lp_dense *u, lorads_lp_dense *v){
+dllexp void LORADSUpdateDimacsErrorADMMLP(lorads_solver *ASolver, lorads_sdp_dense **U, lorads_sdp_dense **V, lorads_lp_dense *u, lorads_lp_dense *v){
     for (lorads_int iCone = 0; iCone < ASolver->nCones; ++iCone){
         averageUV(U[iCone], V[iCone], ASolver->var->R[iCone]);
     }
@@ -296,7 +296,7 @@ __declspec(dllexport) void LORADSUpdateDimacsErrorADMMLP(lorads_solver *ASolver,
     ASolver->dimacError[LORADS_DIMAC_ERROR_PDGAP] = LORADS_ABS(gap) / (1 + LORADS_ABS(ASolver->pObjVal) + LORADS_ABS(ASolver->dObjVal));
 }
 
-__declspec(dllexport) void LORADSNrmInfObj(lorads_solver *ASolver)
+dllexp void LORADSNrmInfObj(lorads_solver *ASolver)
 {
     ASolver->cObjNrmInf = 0.0;
     if (ASolver->nLpCols > 0)
@@ -313,7 +313,7 @@ __declspec(dllexport) void LORADSNrmInfObj(lorads_solver *ASolver)
     }
 }
 
-__declspec(dllexport) void LORADSUpdateDualVar(lorads_solver *ASolver, double rho)
+dllexp void LORADSUpdateDualVar(lorads_solver *ASolver, double rho)
 {
     double *dualVar = ASolver->var->dualVar;
     double minusRho = -rho;
@@ -328,7 +328,7 @@ __declspec(dllexport) void LORADSUpdateDualVar(lorads_solver *ASolver, double rh
     axpy(&(n), &(minusRho), constrSum, &(incx), dualVar, &(incx));
 }
 
-__declspec(dllexport) void LORADSCalDualObj(lorads_solver *ASolver)
+dllexp void LORADSCalDualObj(lorads_solver *ASolver)
 {
     lorads_int n = ASolver->nRows;
     lorads_int one = 1;
@@ -337,7 +337,7 @@ __declspec(dllexport) void LORADSCalDualObj(lorads_solver *ASolver)
 }
 
 
-//__declspec(dllexport) void LORADSNuclearNorm(lorads_solver *ASolver)
+//dllexp void LORADSNuclearNorm(lorads_solver *ASolver)
 //{
 //    ASolver->traceSum = 0;
 //    lorads_int rank = 0;
@@ -353,7 +353,7 @@ __declspec(dllexport) void LORADSCalDualObj(lorads_solver *ASolver)
 //}
 
 
-__declspec(dllexport) lorads_int LORADSCheckSolverStatus(lorads_solver *ASolver){
+dllexp lorads_int LORADSCheckSolverStatus(lorads_solver *ASolver){
     lorads_int retcode = LORADS_RETCODE_OK;
     if (ASolver->AStatus == LORADS_PRIMAL_OPTIMAL){
         retcode = LORADS_RETCODE_EXIT;

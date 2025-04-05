@@ -50,23 +50,23 @@ extern "C"
 {
 #endif
 
-__declspec(dllexport) double LUtilGetTimeStamp(void);
-__declspec(dllexport) void LUtilMatSymmetrize(lorads_int n, double *v);
-__declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx);
-__declspec(dllexport) void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up);
-__declspec(dllexport) void LUtilSortIntbyDbl(lorads_int *data, double *ref, lorads_int low, lorads_int up);
-__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
-__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
+dllexp double LUtilGetTimeStamp(void);
+dllexp void LUtilMatSymmetrize(lorads_int n, double *v);
+dllexp lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx);
+dllexp void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up);
+dllexp void LUtilSortIntbyDbl(lorads_int *data, double *ref, lorads_int low, lorads_int up);
+dllexp void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
+dllexp void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up);
 
-__declspec(dllexport) void LUtilStartCtrlCCheck(void);
-__declspec(dllexport) lorads_int LUtilCheckCtrlC(void);
-__declspec(dllexport) void LUtilResetCtrl(void);
+dllexp void LUtilStartCtrlCCheck(void);
+dllexp lorads_int LUtilCheckCtrlC(void);
+dllexp void LUtilResetCtrl(void);
 
-__declspec(dllexport) lorads_int LUtilGetGlobalMKLThreads(void);
-__declspec(dllexport) void LUtilSetGlobalMKLThreads(lorads_int nTargetThreads);
+dllexp lorads_int LUtilGetGlobalMKLThreads(void);
+dllexp void LUtilSetGlobalMKLThreads(lorads_int nTargetThreads);
 
-__declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter);
-__declspec(dllexport) void FREE(void *ptr);
+dllexp lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter);
+dllexp void FREE(void *ptr);
 
 #ifdef __cplusplus
 }

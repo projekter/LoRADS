@@ -4,6 +4,6 @@
 
 #include "def_lorads_lp_data.h"
 
-__declspec(dllexport) void LPDataMatIChooseType(lp_coeff *lpCoeff, lp_coeff_type dataType);
+dllexp void LPDataMatIChooseType(lp_coeff *lpCoeff, lp_coeff_type dataType);
 
 #endif

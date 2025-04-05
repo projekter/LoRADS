@@ -12,14 +12,14 @@ typedef struct lorads_user_data user_data;
 extern "C" {
 #endif
 
-__declspec(dllexport) void LUserDataCreate( user_data **pHdata );
-__declspec(dllexport) void LUserDataSetConeData( user_data *Hdata, cone_type cone, lorads_int nRow, lorads_int nCol,
+dllexp void LUserDataCreate( user_data **pHdata );
+dllexp void LUserDataSetConeData( user_data *Hdata, cone_type cone, lorads_int nRow, lorads_int nCol,
                                   lorads_int *coneMatBeg, lorads_int *coneMatIdx, double *coneMatElem);
-__declspec(dllexport) cone_type LUserDataChooseCone( user_data *Hdata );
-__declspec(dllexport) void LUserDataClear( user_data *Hdata );
-__declspec(dllexport) void LUserDataDestroy( user_data **pHdata );
-__declspec(dllexport) void LORADSCreateSDPDatas(user_data ***SDPDatas, lorads_int nCones);
-__declspec(dllexport) void LORADSClearUsrData(lorads_int **coneMatBeg, lorads_int **coneMatIdx, double **coneMatElem, lorads_int nBlks,
+dllexp cone_type LUserDataChooseCone( user_data *Hdata );
+dllexp void LUserDataClear( user_data *Hdata );
+dllexp void LUserDataDestroy( user_data **pHdata );
+dllexp void LORADSCreateSDPDatas(user_data ***SDPDatas, lorads_int nCones);
+dllexp void LORADSClearUsrData(lorads_int **coneMatBeg, lorads_int **coneMatIdx, double **coneMatElem, lorads_int nBlks,
  lorads_int *BlkDims, double *rowRHS, lorads_int *LpMatBeg, lorads_int *LpMatIdx, double *LpMatElem, user_data **SDPDatas);
 
 #ifdef __cplusplus

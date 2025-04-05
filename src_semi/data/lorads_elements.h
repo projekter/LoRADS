@@ -6,13 +6,13 @@
 
 
 
-__declspec(dllexport) void addDense(double *alpha, void *constrVal, double *vec);
+dllexp void addDense(double *alpha, void *constrVal, double *vec);
 
-__declspec(dllexport) void addSparse(double *alpha, void *constrVal, double *vec);
+dllexp void addSparse(double *alpha, void *constrVal, double *vec);
 
-__declspec(dllexport) void zeroDense(void *constrVal);
+dllexp void zeroDense(void *constrVal);
 
-__declspec(dllexport) void zeroSparse(void *constrVal);
+dllexp void zeroSparse(void *constrVal);
 
 
 

@@ -5,7 +5,7 @@
 #include "def_lorads_lp_conic.h"
 #include "lorads.h"
 
-__declspec(dllexport) void LORADSSetLpCone(lorads_lp_cone *lp_cone, lorads_int nRows,
+dllexp void LORADSSetLpCone(lorads_lp_cone *lp_cone, lorads_int nRows,
                             lorads_int nLpCols, lorads_int *lpMatBeg,
                             lorads_int *lpMatIdx, double *LpMatElem);
 

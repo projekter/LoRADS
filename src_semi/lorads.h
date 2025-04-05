@@ -30,6 +30,13 @@
 
 #ifdef INT32
 #define lorads_int     int
+
+#ifdef _MSC_VER
+#define dllexp __declspec(dllexport)
+#define dllimp __declspec(dllimport)
+#else
+#define dllexp extern
+#define dllimp extern
 #endif
 
 
@@ -64,7 +71,7 @@ typedef enum{
 #define RET_CODE_TIME_OUT      (1)
 #define RET_CODE_NUM_ERR       (4)
 #define RET_CODE_BAD_ITER      (8)
-__declspec(dllexport) int MAX_ALM_SUB_ITER;
+dllexp int MAX_ALM_SUB_ITER;
 
 
 // Build date

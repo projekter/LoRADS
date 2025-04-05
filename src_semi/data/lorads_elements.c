@@ -4,14 +4,14 @@
 #include "lorads_utils.h"
 #include "lorads_vec_opts.h"
 
-__declspec(dllexport) void addDense(double *alpha, void *constrVal, double *vec)
+dllexp void addDense(double *alpha, void *constrVal, double *vec)
 {
     dense_vec *dense = (dense_vec *)constrVal;
     lorads_int incx = 1;
     axpy(&dense->nnz, alpha, dense->val, &incx, vec, &incx);
 }
 
-__declspec(dllexport) void addSparse(double *alpha, void *constrVal, double *vec)
+dllexp void addSparse(double *alpha, void *constrVal, double *vec)
 {
     sparse_vec *sparse = (sparse_vec *)constrVal;
     int idx = 0;
@@ -22,13 +22,13 @@ __declspec(dllexport) void addSparse(double *alpha, void *constrVal, double *vec
     }
 }
 
-__declspec(dllexport) void zeroDense(void *constrVal)
+dllexp void zeroDense(void *constrVal)
 {
     dense_vec *dense = (dense_vec *)constrVal;
     LORADS_ZERO(dense->val, double, dense->nnz);
 }
 
-__declspec(dllexport) void zeroSparse(void *constrVal)
+dllexp void zeroSparse(void *constrVal)
 {
     sparse_vec *sparse = (sparse_vec *)constrVal;
     for (lorads_int i = 0; i < sparse->nnz; ++i){

@@ -211,7 +211,7 @@ static lorads_int dpartitiond(double *ind, double *val, lorads_int l, lorads_int
     return l;
 }
 
-__declspec(dllexport) double LUtilGetTimeStamp(void)
+dllexp double LUtilGetTimeStamp(void)
 {
 
     return my_clock();
@@ -220,7 +220,7 @@ __declspec(dllexport) double LUtilGetTimeStamp(void)
 /** @brief Symmetrize an n by n matrix whose lower triangular is filled
  *
  */
-__declspec(dllexport) void LUtilMatSymmetrize(lorads_int n, double *v)
+dllexp void LUtilMatSymmetrize(lorads_int n, double *v)
 {
 
     for (lorads_int i = 0, j; i < n; ++i)
@@ -235,7 +235,7 @@ __declspec(dllexport) void LUtilMatSymmetrize(lorads_int n, double *v)
 }
 
 /* Debugging */
-__declspec(dllexport) void LUtilPrintDblContent(lorads_int n, double *d)
+dllexp void LUtilPrintDblContent(lorads_int n, double *d)
 {
 
     for (lorads_int i = 0; i < n; ++i)
@@ -246,7 +246,7 @@ __declspec(dllexport) void LUtilPrintDblContent(lorads_int n, double *d)
     return;
 }
 
-__declspec(dllexport) double LUtilPrintDblSum(lorads_int n, double *d)
+dllexp double LUtilPrintDblSum(lorads_int n, double *d)
 {
 
     double ds = 0.0;
@@ -259,7 +259,7 @@ __declspec(dllexport) double LUtilPrintDblSum(lorads_int n, double *d)
     return ds;
 }
 
-__declspec(dllexport) double LUtilPrintDblAbsSum(lorads_int n, double *d)
+dllexp double LUtilPrintDblAbsSum(lorads_int n, double *d)
 {
 
     double ds = 0.0;
@@ -273,7 +273,7 @@ __declspec(dllexport) double LUtilPrintDblAbsSum(lorads_int n, double *d)
 }
 
 /* Sorting */
-__declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
+dllexp lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int *idx)
 {
     /* Check is an lorads_integer array is ascending. */
 
@@ -288,7 +288,7 @@ __declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int 
     return 1;
 }
 
-// __declspec(dllexport) void LUtilSortIntbyDbl( lorads_int *data, double *ref, lorads_int low, lorads_int up ) {
+// dllexp void LUtilSortIntbyDbl( lorads_int *data, double *ref, lorads_int low, lorads_int up ) {
 
 //     if ( low < up ) {
 //         lorads_int p = dpartitioni(data, ref, low, up);
@@ -299,7 +299,7 @@ __declspec(dllexport) lorads_int LUtilCheckIfAscending(lorads_int n, lorads_int 
 //     return;
 // }
 
-__declspec(dllexport) void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up)
+dllexp void LUtilDescendSortIntByInt(lorads_int *data, lorads_int *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -312,7 +312,7 @@ __declspec(dllexport) void LUtilDescendSortIntByInt(lorads_int *data, lorads_int
     return;
 }
 
-__declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up)
+dllexp void LUtilAscendSortDblByInt(double *data, lorads_int *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -325,7 +325,7 @@ __declspec(dllexport) void LUtilAscendSortDblByInt(double *data, lorads_int *ref
     return;
 }
 
-__declspec(dllexport) void LUtilSortDblByDbl(double *data, double *ref, lorads_int low, lorads_int up)
+dllexp void LUtilSortDblByDbl(double *data, double *ref, lorads_int low, lorads_int up)
 {
 
     if (low < up)
@@ -338,12 +338,12 @@ __declspec(dllexport) void LUtilSortDblByDbl(double *data, double *ref, lorads_i
     return;
 }
 #ifdef __WIN32
-__declspec(dllexport) void LUtilStartCtrlCCheck(void)
+dllexp void LUtilStartCtrlCCheck(void)
 {
     SetConsoleCtrlHandler((PHANDLER_ROUTINE)monitorCtrlC, TRUE);
 }
 #else
-__declspec(dllexport) void LUtilStartCtrlCCheck(void)
+dllexp void LUtilStartCtrlCCheck(void)
 {
 
     act.sa_handler = monitorCtrlC;
@@ -351,35 +351,35 @@ __declspec(dllexport) void LUtilStartCtrlCCheck(void)
 
     return;
 }
-__declspec(dllexport) lorads_int LUtilCheckCtrlC(void)
+dllexp lorads_int LUtilCheckCtrlC(void)
 {
 
     return isCtrlC;
 }
 
-__declspec(dllexport) void LUtilResetCtrl(void)
+dllexp void LUtilResetCtrl(void)
 {
 
     isCtrlC = 0;
 }
 #endif
 
-// __declspec(dllexport) lorads_int MKL_Get_Max_Threads( void );
-// __declspec(dllexport) lorads_int MKL_Set_Num_Threads( lorads_int nth );
+// dllexp lorads_int MKL_Get_Max_Threads( void );
+// dllexp lorads_int MKL_Set_Num_Threads( lorads_int nth );
 
-// __declspec(dllexport) lorads_int LUtilGetGlobalMKLThreads( void ) {
+// dllexp lorads_int LUtilGetGlobalMKLThreads( void ) {
 //
 //     return MKL_Get_Max_Threads();
 // }
 //
-// __declspec(dllexport) void LUtilSetGlobalMKLThreads( lorads_int nTargetThreads ) {
+// dllexp void LUtilSetGlobalMKLThreads( lorads_int nTargetThreads ) {
 //
 //     MKL_Set_Num_Threads(nTargetThreads);
 //
 //     return;
 // }
 
-__declspec(dllexport) void LORADS_ONE(double *var, lorads_int size)
+dllexp void LORADS_ONE(double *var, lorads_int size)
 {
     for (lorads_int i = 0; i < size; ++i)
     {
@@ -401,7 +401,7 @@ __declspec(dllexport) void LORADS_ONE(double *var, lorads_int size)
 // update_interval: The lorads_interval at which to update the old EMA value
 // counter: The counter for iterations to determine when to update the old EMA
 // Returns: Boolean value indicating if there's no significant decrease. Returns true by default if not updating old EMA.
-__declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter)
+dllexp lorads_int LUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, lorads_int update_interval, lorads_int *counter)
 {
     lorads_int result = 1;                                                  // Default to true
     *current_ema = alpha * new_value + (1 - alpha) * (*current_ema); // Update the EMA value
@@ -434,7 +434,7 @@ __declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double
 }
 
 
-// __declspec(dllexport) int AUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, int update_interval, int *counter)
+// dllexp int AUtilUpdateCheckEma(double *current_ema, double *old_ema, double new_value, double alpha, double threshold, int update_interval, int *counter)
 // {
 //     int result = 1;                                                  // Default to true
 //     *current_ema = alpha * new_value + (1 - alpha) * (*current_ema); // Update the EMA value
@@ -460,6 +460,6 @@ __declspec(dllexport) lorads_int LUtilUpdateCheckEma(double *current_ema, double
 //     return result;
 // }
 
-__declspec(dllexport) void FREE(void *data){
+dllexp void FREE(void *data){
     free(data);
 }

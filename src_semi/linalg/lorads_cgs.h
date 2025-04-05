@@ -14,10 +14,10 @@ typedef struct
     double *weight;
 } admmCG;
 
-__declspec(dllexport) void LORADSCGSolverCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr);
-__declspec(dllexport) void LORADSCGSolverReCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr);
-__declspec(dllexport) void CGSolve(void *linSys, double *x, double *b, double cg_tol, lorads_int cg_maxIter);
-__declspec(dllexport) void CGSetData (lorads_cg_linsys *cg, void *MMat, void (*Mvec) (void *, double *, double *));
-__declspec(dllexport) void CGSolverClear(void *pCGSolver);
-__declspec(dllexport) void LORADSCGDestroy(lorads_solver *ASolver);
+dllexp void LORADSCGSolverCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr);
+dllexp void LORADSCGSolverReCreate(lorads_cg_linsys **pCGSolver, lorads_int blkDim, lorads_int rank, lorads_int nConstr);
+dllexp void CGSolve(void *linSys, double *x, double *b, double cg_tol, lorads_int cg_maxIter);
+dllexp void CGSetData (lorads_cg_linsys *cg, void *MMat, void (*Mvec) (void *, double *, double *));
+dllexp void CGSolverClear(void *pCGSolver);
+dllexp void LORADSCGDestroy(lorads_solver *ASolver);
 #endif //LORADS_CG_H

@@ -27,7 +27,7 @@ static lorads_int LUserDataICheckLpBound( user_data *Ldata ) {
     return 1;
 }
 
-__declspec(dllexport) void LUserDataCreate( user_data **pLdata ) {
+dllexp void LUserDataCreate( user_data **pLdata ) {
     
 
     if ( !pLdata ) {
@@ -42,7 +42,7 @@ __declspec(dllexport) void LUserDataCreate( user_data **pLdata ) {
     *pLdata = Ldata;
 }
 
-__declspec(dllexport) void LUserDataSetConeData( user_data *Ldata, cone_type cone, lorads_int nRow, lorads_int nCol,
+dllexp void LUserDataSetConeData( user_data *Ldata, cone_type cone, lorads_int nRow, lorads_int nCol,
                                   lorads_int *coneMatBeg, lorads_int *coneMatIdx, double *coneMatElem ) {
     
     Ldata->cone = cone;
@@ -55,7 +55,7 @@ __declspec(dllexport) void LUserDataSetConeData( user_data *Ldata, cone_type con
     return;
 }
 
-__declspec(dllexport) cone_type LUserDataChooseCone( user_data *Ldata ) {
+dllexp cone_type LUserDataChooseCone( user_data *Ldata ) {
         
     /* Automatic choice between different cone types*/
     if ( Ldata->cone == LORADS_CONETYPE_BOUND ||
@@ -82,7 +82,7 @@ __declspec(dllexport) cone_type LUserDataChooseCone( user_data *Ldata ) {
     return LORADS_CONETYPE_UNKNOWN;
 }
 
-__declspec(dllexport) void LUserDataClear( user_data *Ldata ) {
+dllexp void LUserDataClear( user_data *Ldata ) {
     
     if ( !Ldata ) {
         return;
@@ -93,7 +93,7 @@ __declspec(dllexport) void LUserDataClear( user_data *Ldata ) {
     return;
 }
 
-__declspec(dllexport) void LUserDataDestroy( user_data **pLdata ) {
+dllexp void LUserDataDestroy( user_data **pLdata ) {
     
     if ( !pLdata ) {
         return;
@@ -106,13 +106,13 @@ __declspec(dllexport) void LUserDataDestroy( user_data **pLdata ) {
 }
 
 
-__declspec(dllexport) void LORADSCreateSDPDatas(user_data ***SDPDatas, lorads_int nCones){
+dllexp void LORADSCreateSDPDatas(user_data ***SDPDatas, lorads_int nCones){
     user_data **SDPDatasTemp;
     LORADS_INIT(SDPDatasTemp, user_data *, nCones);
     *SDPDatas = SDPDatasTemp;
 }
 
-__declspec(dllexport) void LORADSClearUsrData(lorads_int **coneMatBeg, lorads_int **coneMatIdx, double **coneMatElem, lorads_int nBlks,
+dllexp void LORADSClearUsrData(lorads_int **coneMatBeg, lorads_int **coneMatIdx, double **coneMatElem, lorads_int nBlks,
                                lorads_int *BlkDims, double *rowRHS, lorads_int *LpMatBeg, lorads_int *LpMatIdx, double *LpMatElem, user_data **SDPDatas){
     for (lorads_int iBlk = 0; iBlk < nBlks; ++iBlk)
     {
