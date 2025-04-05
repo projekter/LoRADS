@@ -705,7 +705,7 @@ dllexp void setlbfgsHisTwoLP(lorads_solver *ASolver, lorads_lp_dense *gradLp, lo
 
 
 static void rootNum0PrintInfo(lorads_int minIter){
-#ifdef LORADS_INT32
+#ifdef INT32
     printf("*Numerical Fail in ALM minter %d, we use the best feasible solution as warm start\n", minIter);
 #endif
 #ifdef UNIX_INT64

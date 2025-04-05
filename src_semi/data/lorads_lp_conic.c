@@ -157,7 +157,7 @@ dllexp void destroy_lp_cone_data(lorads_lp_cone_data **coneData){
 }
 
 dllexp void lp_cone_view(lorads_lp_cone_data *cone ) {
-#ifdef lorads_int32
+#ifdef INT32
     printf("LP Cone of %d variables and %d constraints \n", cone->nRow, cone->nCol);
 #endif
 #ifdef UNIX_INT64

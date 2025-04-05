@@ -792,7 +792,7 @@ dllexp void  LORADSCGReAllocate(lorads_solver *ASolver){
 }
 
 static void printinfo_aug(lorads_int iCone){
-#ifdef LORADS_INT32
+#ifdef INT32
     printf("**Rank truncated to sqrt(2m) on SDP Cone No.%d.\n", iCone);
 #endif
 #ifdef UNIX_INT64

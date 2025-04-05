@@ -275,7 +275,7 @@ dllexp void sdpDenseConeViewImpl(void *coneIn)
            cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
 
-#ifdef LORADS_INT32
+#ifdef INT32
     printf("- Conic statistics: Zero %ld Sp %ld Ds %ld \n", cone->sdpConeStats[SDP_COEFF_ZERO],
            cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
@@ -447,7 +447,7 @@ dllexp void sdpDenseDataWeightSumImpl(void *coneIn, double *weight, sdp_coeff *s
 dllexp void sdpSparseConeViewImpl(void *coneIn)
 {
     lorads_cone_sdp_sparse *cone = (lorads_cone_sdp_sparse *)coneIn;
-#ifdef LORADS_INT32
+#ifdef INT32
     printf("- Sparse SDP cone of %d rows and %d nonzeros. \n", cone->nRow, cone->nRowElem);
 #endif
 #ifdef MAC_INT64
@@ -460,7 +460,7 @@ dllexp void sdpSparseConeViewImpl(void *coneIn)
     printf("sparse cone view\n");
     printf("- Objective: \n");
     cone->sdpObj->view(cone->sdpObj->dataMat);
-#ifdef LORADS_INT32
+#ifdef INT32
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
     {
         printf("%d: ", cone->rowIdx[iRow]);
