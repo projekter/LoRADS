@@ -126,11 +126,7 @@ extern double nrm2( lorads_int *n, double *x, lorads_int *incx ) {
 
     return sqrt(nrm);
 #else
-#ifdef UNDER_BLAS
-    return dnrm2_(n, x, incx);
-#else
-    return dnrm2(n, x, incx);
-#endif
+    return BLAS(dnrm2)(n, x, incx);
 #endif
 }
 
@@ -143,11 +139,7 @@ extern void axpy( lorads_int *n, double *alpha, double *x, lorads_int *incx, dou
         y[i] += (*alpha) * x[i];
     }
 #else
-#ifdef UNDER_BLAS
-    daxpy_(n, alpha, x, incx, y, incy);
-#else
-    daxpy(n, alpha, x, incx, y, incy);
-#endif
+    BLAS(daxpy)(n, alpha, x, incx, y, incy);
 
 #endif
     return;
@@ -195,11 +187,7 @@ extern double dot( lorads_int *n, double *x, lorads_int *incx, double *y, lorads
 
     return dres;
 #else
-#ifdef UNDER_BLAS
-    return ddot_(n, x, incx, y, incy);
-#else
-    return ddot(n, x, incx, y, incy);
-#endif
+    return BLAS(ddot)(n, x, incx, y, incy);
 #endif
 }
 
@@ -217,11 +205,7 @@ extern void scal( lorads_int *n, double *sa, double *sx, lorads_int *incx ) {
         sx[i] = sx[i] * a;
     }
 #else
-#ifdef UNDER_BLAS
-    dscal_(n, sa, sx, incx);
-#else
-    dscal(n, sa, sx, incx);
-#endif
+    BLAS(dscal)(n, sa, sx, incx);
 #endif
     return;
 }
@@ -248,22 +232,14 @@ extern void rscl( lorads_int *n, double *sa, double *sx, lorads_int *incx ) {
         sx[i] = sx[i] / a;
     }
 #else
-#ifdef UNDER_BLAS
-    drscl_(n, sa, sx, incx);
-#else
-    drscl(n, sa, sx, incx);
-#endif
+    BLAS(drscl)(n, sa, sx, incx);
 #endif
     return;
 }
 
 extern void syr( char *uplo, lorads_int *n, double *alpha, double *x, lorads_int *incx, double *a, lorads_int *lda ) {
     // A = alpha * x * x^T + A
-#ifdef UNDER_BLAS
-    dsyr_(uplo, n, alpha, x, incx, a, lda);
-#else
-    dsyr(uplo, n, alpha, x, incx, a, lda);
-#endif
+    BLAS(dsyr)(uplo, n, alpha, x, incx, a, lda);
     return;
 }
 
@@ -333,11 +309,7 @@ extern double normalize( lorads_int *n, double *a ) {
     double norm = nrm2(n, a, &AIntConstantOne);
 
     if ( norm > 1e-16 ) {
-#ifdef UNDER_BLAS
-        drscl_(n, &norm, a, &AIntConstantOne);
-#else
-        drscl(n, &norm, a, &AIntConstantOne);
-#endif
+        BLAS(drscl)(n, &norm, a, &AIntConstantOne);
     } else {
         norm = 0.0;
         LORADS_ZERO(a, double, *n);

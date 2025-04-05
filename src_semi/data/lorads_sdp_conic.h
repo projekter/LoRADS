@@ -30,23 +30,13 @@ dllexp void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnz
 extern "C" {
 #endif
 
-#ifdef UNDER_BLAS
-extern void dsyevr_( const char *jobz, const char *range, const char *uplo,
+extern void BLAS(dsyevr)( const char *jobz, const char *range, const char *uplo,
     const lorads_int  *n, double *a, const lorads_int *lda,
     const double *vl, const double *vu, const lorads_int *il,
     const lorads_int *iu, const double *abstol, lorads_int *m,
     double *w, double *z, const lorads_int *ldz, lorads_int *isuppz,
     double *work, const lorads_int *lwork, lorads_int *iwork,
     const lorads_int *liwork, lorads_int *info );
-#else
-extern void dsyevr( const char *jobz, const char *range, const char *uplo,
-    const lorads_int  *n, double *a, const lorads_int *lda,
-    const double *vl, const double *vu, const lorads_int *il,
-    const lorads_int *iu, const double *abstol, lorads_int *m,
-    double *w, double *z, const lorads_int *ldz, lorads_int *isuppz,
-    double *work, const lorads_int *lwork, lorads_int *iwork,
-    const lorads_int *liwork, lorads_int *info );
-#endif
 
 #ifdef __cplusplus
 }

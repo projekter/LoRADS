@@ -1062,11 +1062,7 @@ dllexp void cal_sdp_const(lorads_params *params, lorads_solver *ASolver, SDPCons
     LORADSNrm2Obj(ASolver);
     LORADSNrmInfObj(ASolver);
     ASolver->bRHSNrm1 = nrm1(&ASolver->nRows, ASolver->rowRHS, &AIntConstantOne);
-#ifdef UNDER_BLAS
-    ASolver->bRHSNrmInf = fabs(ASolver->rowRHS[idamax_(&ASolver->nRows, ASolver->rowRHS, &AIntConstantOne)]);
-#else
-    ASolver->bRHSNrmInf = fabs(ASolver->rowRHS[idamax(&ASolver->nRows, ASolver->rowRHS, &AIntConstantOne)]);
-#endif
+    ASolver->bRHSNrmInf = fabs(ASolver->rowRHS[BLAS(idamax)(&ASolver->nRows, ASolver->rowRHS, &AIntConstantOne)]);
 
     ASolver->bRHSNrm2 = nrm2(&ASolver->nRows, ASolver->rowRHS, &AIntConstantOne);
     sdpConst->l_1_norm_c = ASolver->cObjNrm1;

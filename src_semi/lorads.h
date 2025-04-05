@@ -22,14 +22,18 @@
 // Type define
 #ifdef MAC_INT64
 #define lorads_int     int64_t
+#define BLAS(x) x##_64_
 #endif
 
 #ifdef UNIX_INT64
 #define lorads_int     int64_t
+#define BLAS(x) x##_64_
 #endif
 
 #ifdef INT32
 #define lorads_int     int
+#define BLAS(x) x##_
+#endif
 
 #ifdef _MSC_VER
 #define dllexp __declspec(dllexport)

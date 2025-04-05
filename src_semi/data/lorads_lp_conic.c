@@ -134,11 +134,7 @@ dllexp void lp_cone_obj_nrm2Square(lorads_lp_cone_data *coneData, double *nrm2Va
 
 dllexp void lp_cone_obj_nrmInf(lorads_lp_cone_data *coneData, double *nrmInf, lorads_int nLpCols){
     lorads_int incx = 1;
-#ifdef UNDER_BLAS
-    lorads_int idx = idamax_(&nLpCols, coneData->objMatElem, &incx);
-#else
-    lorads_int idx = idamax(&nLpCols, coneData->objMatElem, &incx);
-#endif
+    lorads_int idx = BLAS(idamax)(&nLpCols, coneData->objMatElem, &incx);
     nrmInf[0] = LORADS_MAX(fabs(coneData->objMatElem[idx]), nrmInf[0]);
 }
 

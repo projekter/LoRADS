@@ -53,50 +53,25 @@ extern double normalize( lorads_int *n, double *a );
 #include <math.h>
 /* Blas functions */
 
-#ifdef UNDER_BLAS
 // ||x|| = sqrt(x[0]*x[0] + x[incx]*x[incx] + x[2*incx]*x[2*incx] + ...)
-extern double dnrm2_( lorads_int *n, double *x, lorads_int *incx );
+extern double BLAS(dnrm2)( lorads_int *n, double *x, lorads_int *incx );
 
 // y[i] = alpha * x[i] + y[i]，where i from 0 to n-1, incx = 1, incy = 1 generally
-extern void daxpy_( lorads_int *n, double *alpha, double *x, lorads_int *incx, double *y, lorads_int *incy );
+extern void BLAS(daxpy)( lorads_int *n, double *alpha, double *x, lorads_int *incx, double *y, lorads_int *incy );
 
 //result = x[0]*y[0] + x[incx]*y[incy] + x[2*incx]*y[2*incy] + ...
-extern double ddot_( lorads_int *n, double *x, lorads_int *incx, double *y, lorads_int *incy );
+extern double BLAS(ddot)( lorads_int *n, double *x, lorads_int *incx, double *y, lorads_int *incy );
 
 //sx[i] = sa * sx[i]，where i from 0 to n-1
-extern void dscal_( lorads_int *n, double *sa, double *sx, lorads_int *incx );
+extern void BLAS(dscal)( lorads_int *n, double *sa, double *sx, lorads_int *incx );
 
 // sx[i] = sx[i] / sa，where i from 0 to n-1
-extern void drscl_( lorads_int *n, double *sa, double *sx, lorads_int *incx );
+extern void BLAS(drscl)( lorads_int *n, double *sa, double *sx, lorads_int *incx );
 
 // A = alpha * x * x^T + A
-extern void dsyr_( char *uplo, lorads_int *n, double *alpha, double *x, lorads_int *incx, double *a, lorads_int *lda );
+extern void BLAS(dsyr)( char *uplo, lorads_int *n, double *alpha, double *x, lorads_int *incx, double *a, lorads_int *lda );
 
 // idamax The index used to find the element of the vector with the largest absolute value. It returns the index value of the element in the vector with the largest absolute value, not the actual element value.
-extern lorads_int idamax_( lorads_int *n, double *x, lorads_int *incx );
+extern lorads_int BLAS(idamax)( lorads_int *n, double *x, lorads_int *incx );
 
-extern lorads_int idamin_( lorads_int *n, double *x, lorads_int *incx );
-#else
-// ||x|| = sqrt(x[0]*x[0] + x[incx]*x[incx] + x[2*incx]*x[2*incx] + ...)
-extern double dnrm2( lorads_int *n, double *x, lorads_int *incx );
-
-// y[i] = alpha * x[i] + y[i]，where i from 0 to n-1, incx = 1, incy = 1 generally
-extern void daxpy( lorads_int *n, double *alpha, double *x, lorads_int *incx, double *y, lorads_int *incy );
-
-//result = x[0]*y[0] + x[incx]*y[incy] + x[2*incx]*y[2*incy] + ...
-extern double ddot( lorads_int *n, double *x, lorads_int *incx, double *y, lorads_int *incy );
-
-//sx[i] = sa * sx[i]，where i from 0 to n-1
-extern void dscal( lorads_int *n, double *sa, double *sx, lorads_int *incx );
-
-// sx[i] = sx[i] / sa，where i from 0 to n-1
-extern void drscl( lorads_int *n, double *sa, double *sx, lorads_int *incx );
-
-// A = alpha * x * x^T + A
-extern void dsyr( char *uplo, lorads_int *n, double *alpha, double *x, lorads_int *incx, double *a, lorads_int *lda );
-
-// idamax The index used to find the element of the vector with the largest absolute value. It returns the index value of the element in the vector with the largest absolute value, not the actual element value.
-extern lorads_int idamax( lorads_int *n, double *x, lorads_int *incx );
-
-extern lorads_int idamin( lorads_int *n, double *x, lorads_int *incx );
-#endif
+extern lorads_int BLAS(idamin)( lorads_int *n, double *x, lorads_int *incx );

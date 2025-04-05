@@ -1272,38 +1272,22 @@ int dual_infeasible(sdp_coeff_dense *M, double *res)
     double work_query;
     lorads_int iwork_query;
 
-    #ifdef UNDER_BLAS
-        dsyevr_(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
-                NULL, NULL, &i, &i, &tol, &m,
-                w, NULL, &i, NULL,
-                &work_query, &lwork, &iwork_query, &liwork,
-                &info);
-    #else
-        dsyevr(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
-                NULL, NULL, &i, &i, &tol, &m,
-                w, NULL, &i, NULL,
-                &work_query, &lwork, &iwork_query, &liwork,
-                &info);
-    #endif
+    BLAS(dsyevr)(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                 NULL, NULL, &i, &i, &tol, &m,
+                 w, NULL, &i, NULL,
+                 &work_query, &lwork, &iwork_query, &liwork,
+                 &info);
 
     lwork = (lorads_int)work_query;
     double *work = (double*)malloc(sizeof(double) * lwork);
     liwork = iwork_query;
     lorads_int *iwork = (lorads_int*)malloc(sizeof(lorads_int) * liwork);
 
-    #ifdef UNDER_BLAS
-        dsyevr_(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
-                NULL, NULL, &i, &i, &tol, &m,
-                w, NULL, &i, NULL,
-                work, &lwork, iwork, &liwork,
-                &info);
-    #else
-        dsyevr(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
-                NULL, NULL, &i, &i, &tol, &m,
-                w, NULL, &i, NULL,
-                work, &lwork, iwork, &liwork,
-                &info);
-    #endif
+    BLAS(dsyevr)(&jobz, &range, &uplo, &n, M->dsMatElem, &n,
+                 NULL, NULL, &i, &i, &tol, &m,
+                 w, NULL, &i, NULL,
+                 work, &lwork, iwork, &liwork,
+                 &info);
 
     res[0] = w[0];
     free(w);

@@ -53,14 +53,9 @@ dllexp void LORADSUVt(sdp_coeff *UVt_w_sum, lorads_sdp_dense *U, lorads_sdp_dens
         char trans = 'N';
         double alpha = 0.5;
         double beta = 0.0;
-        #ifdef UNDER_BLAS
         // C := alpha*A**T*B + alpha*B**T*A + beta*C,
-            dsyr2k_(&ACharConstantUploLow, &trans, &U->nRows, &U->rank, &alpha, U->matElem, &U->nRows, V->matElem, &U->nRows,
-                &beta, dense->dsMatElem, &U->nRows);
-        #else
-            dsyr2k(&ACharConstantUploLow, &trans, &U->nRows, &U->rank, &alpha, U->matElem, &U->nRows, V->matElem, &U->nRows,
-                &beta, dense->dsMatElem, &U->nRows);
-        #endif
+        BLAS(dsyr2k)(&ACharConstantUploLow, &trans, &U->nRows, &U->rank, &alpha, U->matElem, &U->nRows, V->matElem, &U->nRows,
+            &beta, dense->dsMatElem, &U->nRows);
     }
 }
 

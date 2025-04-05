@@ -666,11 +666,7 @@ extern void dataMatDenseMultiRkMat(void *A, lorads_sdp_dense *X, double *AX){
     char uplo = 'L';
     lorads_int m = dense->nSDPCol;
     lorads_int n = X->rank;
-#ifdef UNDER_BLAS
-    dsymm_(&side, &uplo, &m, &n, &alpha, dense->dsMatElem, &m, X->matElem, &m, &beta, AX, &m );
-#else
-    dsymm(&side, &uplo, &m, &n, &alpha, dense->dsMatElem, &m, X->matElem, &m, &beta, AX, &m );
-#endif
+    BLAS(dsymm)(&side, &uplo, &m, &n, &alpha, dense->dsMatElem, &m, X->matElem, &m, &beta, AX, &m );
 }
 
 extern void dataMatDenseMV(void *A, double *x, double *y, lorads_int n){
@@ -682,11 +678,7 @@ extern void dataMatDenseMV(void *A, double *x, double *y, lorads_int n){
     char side = 'L'; // C:= alpha * A * B + beta * C;
     char uplo = 'L';
     lorads_int k = 1;
-#ifdef UNDER_BLAS
-    dsymm_(&side, &uplo, &m, &k, &alpha, dense->dsMatElem, &m, x, &m, &beta, y, &m );
-#else
-    dsymm(&side, &uplo, &m, &k, &alpha, dense->dsMatElem, &m, x, &m, &beta, y, &m );
-#endif
+    BLAS(dsymm)(&side, &uplo, &m, &k, &alpha, dense->dsMatElem, &m, x, &m, &beta, y, &m );
 }
 
 static void dataMatDenseMultiRkMatInnerProRkMat(void *A, lorads_sdp_dense *U, lorads_sdp_dense *V, double *res, void *UVtIn, sdp_coeff_type UVtType){
