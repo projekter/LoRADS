@@ -41,6 +41,7 @@
 #else
 #define dllexp extern
 #define dllimp extern
+#define __forceinline static __attribute__((always_inline))
 #endif
 
 

@@ -266,7 +266,7 @@ dllexp void sdpDenseConeViewImpl(void *coneIn)
 //        cone->sdpRow[iRow]->view(cone->sdpRow[iRow]->dataMat);
 //    }
 #ifdef UNIX_INT64
-    printf("- Conic statistics: Zero %d Sp %d Ds %d SpR1 %d DsR1 %d \n", cone->sdpConeStats[SDP_COEFF_ZERO],
+    printf("- Conic statistics: Zero %ld Sp %ld Ds %ld \n", cone->sdpConeStats[SDP_COEFF_ZERO],
            cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
 
@@ -276,7 +276,7 @@ dllexp void sdpDenseConeViewImpl(void *coneIn)
 #endif
 
 #ifdef INT32
-    printf("- Conic statistics: Zero %ld Sp %ld Ds %ld \n", cone->sdpConeStats[SDP_COEFF_ZERO],
+    printf("- Conic statistics: Zero %d Sp %d Ds %d \n", cone->sdpConeStats[SDP_COEFF_ZERO],
            cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
     return;
@@ -467,9 +467,8 @@ dllexp void sdpSparseConeViewImpl(void *coneIn)
         sdpDataMatView(cone->sdpRow[iRow]);
     }
 
-    printf("- Conic statistics: Zero %d Sp %d Ds %d SpR1 %d DsR1 %d \n", cone->sdpConeStats[SDP_COEFF_ZERO],
-           cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE],
-           cone->sdpConeStats[SDP_COEFF_SPR1], cone->sdpConeStats[SDP_COEFF_DSR1]);
+    printf("- Conic statistics: Zero %d Sp %d Ds %d \n", cone->sdpConeStats[SDP_COEFF_ZERO],
+           cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
 #ifdef MAC_INT64
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
@@ -485,12 +484,11 @@ dllexp void sdpSparseConeViewImpl(void *coneIn)
     for (lorads_int iRow = 0; iRow < cone->nRowElem; ++iRow)
     {
         printf("%ld: ", cone->rowIdx[iRow]);
-        sdpDataMatView(cone->sdpRow[iRow]);
+        cone->sdpRow[iRow]->view(cone->sdpRow[iRow]->dataMat);
     }
 
-    printf("- Conic statistics: Zero %ld Sp %ld Ds %ld SpR1 %ld DsR1 %ld \n", cone->sdpConeStats[SDP_COEFF_ZERO],
-           cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE],
-           cone->sdpConeStats[SDP_COEFF_SPR1], cone->sdpConeStats[SDP_COEFF_DSR1]);
+    printf("- Conic statistics: Zero %ld Sp %ld Ds %ld \n", cone->sdpConeStats[SDP_COEFF_ZERO],
+           cone->sdpConeStats[SDP_COEFF_SPARSE], cone->sdpConeStats[SDP_COEFF_DENSE]);
 #endif
     return;
 }
