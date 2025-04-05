@@ -30,7 +30,7 @@ dllexp void sdpDenseConeNnzStatCoeff(void *coneIn, double *stat, lorads_int *nnz
 extern "C" {
 #endif
 
-extern void BLAS(dsyevr)( const char *jobz, const char *range, const char *uplo,
+dllimp void BLAS(dsyevr)( const char *jobz, const char *range, const char *uplo,
     const lorads_int  *n, double *a, const lorads_int *lda,
     const double *vl, const double *vu, const lorads_int *il,
     const lorads_int *iu, const double *abstol, lorads_int *m,

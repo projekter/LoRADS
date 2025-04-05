@@ -88,7 +88,6 @@ dllexp int MAX_ALM_SUB_ITER;
 #define LORADS_TERMINATION_TOL (1e-5)
 
 
-#include <getopt.h>
 #include <stdbool.h>
 
 typedef struct{
