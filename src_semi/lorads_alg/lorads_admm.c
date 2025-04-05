@@ -212,7 +212,7 @@ dllexp lorads_int LORADSADMMOptimize_reopt(lorads_params *params, lorads_solver 
 #ifdef UNIX_INT64
             printf("exit admm since maxiter greater than iter_celling:%ld\n", iter_celling);
 #endif
-            
+
             break;
         }
         endCG_tol = LORADS_MIN(admm_iter_state->l_1_primal_infeasibility * 1e-4, 1e-8);

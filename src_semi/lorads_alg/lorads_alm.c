@@ -1030,7 +1030,7 @@ dllexp lorads_int LORADS_ALMOptimize(lorads_params *params, lorads_solver *ASolv
         rank_flag_thres = 5;
     }
 
-    
+
     int max_sub_iter_inc_factor = 10000;
     int max_sub_iter_ceil = 25000;
 

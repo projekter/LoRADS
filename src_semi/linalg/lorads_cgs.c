@@ -85,11 +85,11 @@ dllexp void CGSolve(void *linSys, double *x, double *b, double cg_tol, lorads_in
 
     /* CG working scalers */
     double qTr = 0.0; // for alpha, beta
-    double qTrNew = 0.0; // for beta 
+    double qTrNew = 0.0; // for beta
     double pTQ = 0.0; // for alpha
     double alpha = 0.0;
     double beta = 0.0;
-    double resiNorm = 0.0; // for stopping 
+    double resiNorm = 0.0; // for stopping
     double bNorm = 0.0; // for rescale
 
     double *r = cg->rIter;
